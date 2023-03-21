@@ -105,7 +105,7 @@ if ( ! class_exists('WPE_Model_Prayer')) {
             if (isset($_POST['prayer_messages'])) {
                 $data['prayer_messages'] = sanitize_textarea_field(stripslashes_deep( wp_encode_emoji($_POST['prayer_messages'])));
             }
-            $data['prayer_title'] = $_SERVER['REMOTE_ADDR'];
+            if (isset($_POST['prayer_title'])) {$data['prayer_title'] = sanitize_text_field($_POST['prayer_title']);} else {$data['prayer_title'] = $_SERVER['REMOTE_ADDR'];}
             $data['prayer_author'] = get_current_user_id();
 
             $data['prayer_status'] = 'approved';

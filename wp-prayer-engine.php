@@ -3,7 +3,7 @@
  * WP Prayer Engine class file.
  * @package Forms
  * @author Go Prayer
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 /*
@@ -18,7 +18,7 @@ Author: Go Prayer
 
 Author URI: https://www.goprayer.com/
 
-Version: 1.9.7
+Version: 1.9.8
 
 Text Domain: wp-prayer
 

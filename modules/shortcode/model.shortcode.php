@@ -47,7 +47,7 @@
                 if ( !isset( $nonce ) || ! wp_verify_nonce($nonce, 'wpgmp-nonce')) {
                     die('Cheating...');
                 }
-				if ($_POST['honeypot'] == 'honeypot') {echo '<script>window.history.replaceState( null, null, window.location.href );</script>';unset($_POST);}
+                if (!empty(htmlspecialchars($_POST['honeypot']))) {echo '<script>window.history.replaceState( null, null, window.location.href );</script>';unset($_POST);}
                 $option = unserialize(get_option('_wpe_prayer_engine_settings'));
                 //  var_dump($_POST);
 				$option['wpe_captcha']=(isset( $option['wpe_captcha'] ) and ! empty( $option['wpe_captcha'] )) ? $option['wpe_captcha'] : '';
@@ -57,7 +57,11 @@
 						if (!filter_var($_POST['prayer_author_email'], FILTER_VALIDATE_EMAIL)) {$this->errors['prayer_author_email'] = __('Email', WPE_TEXT_DOMAIN);}
 						$num_found= preg_match_all('/(((http|https|ftp|ftps)\:\/\/)|(www\.))[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\:[0-9]+)?(\/\S*)?/', $_POST['prayer_messages'], $results, PREG_PATTERN_ORDER);
 						if (empty($_POST['prayer_messages']) || !empty($num_found)) {$this->errors['prayer_messages'] = __('Prayer Request', WPE_TEXT_DOMAIN);}
-					$this->verify($_POST);
+                            $lang=get_bloginfo("language");
+                            $length_count = str_word_count($_POST['prayer_messages']);
+                            $arr = array("en-US", "es-MX" , "fr-CA" , "pl_PL","es-ES","es-VE","ru-RU","sr-RS","es-EC","nl-NL");
+                            if(in_array($lang, $arr) and $length_count< 3) {$this->errors['prayer_messages'] = __('Prayer Request',WPE_TEXT_DOMAIN);}
+                            $this->verify($_POST);
                     if (isset($_POST['captcha_code'])) {
                         if (empty($_SESSION['captcha_code']) || strcasecmp($_SESSION['captcha_code'],
                                 $_POST['captcha_code']) != 0) {

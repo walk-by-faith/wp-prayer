@@ -39,11 +39,11 @@ $form->add_element( 'radio', 'request_type', array(
 'required' => true,
 ));
 $form->add_element( 'text', 'prayer_title', array(
-'label' => __( 'Title', WPE_TEXT_DOMAIN ),
+'label' => __( 'IP Address', WPE_TEXT_DOMAIN ),
 'value' => (isset( $data['prayer_title'] ) and ! empty( $data['prayer_title'] )) ? $data['prayer_title'] : '',
-'desc' => __( 'Title', WPE_TEXT_DOMAIN ),
+'desc' => __( 'IP Address', WPE_TEXT_DOMAIN ),
 'required' => true,
-'placeholder' => __( 'Title', WPE_TEXT_DOMAIN ),
+'placeholder' => __( 'IP Address', WPE_TEXT_DOMAIN ),
 'id' => 'prayer_title_row',
 ));
 $form->add_element( 'textarea', 'prayer_messages', array(

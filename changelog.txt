@@ -5,6 +5,27 @@
 This file contains older changelog entries, so we can keep the size of the standard WordPress readme.txt file reasonable.
 For the latest changes, please see the "Changelog" section of the [readme.txt file](https://plugins.svn.wordpress.org/wp-prayer/trunk/readme.txt)
 
+= 1.9.3 =
+* Fix javascript error on admin manage prayer comments
+
+= 1.9.2 =
+* Fix label on Praise Report Form
+
+= 1.9.1 =
+* Change Manage Prayers pagination to 20 rows
+
+= 1.9.0 =
+* Block prayer comments with hyperlinks
+
+= 1.8.9 =
+* Add option to show date on prayer listing instead of time ago
+
+= 1.8.8 =
+* Add option to show social media share button
+
+= 1.8.7 =
+* Block prayer requests with hyperlinks
+
 = 1.8.6 =
 * Fix Pray button interval
 

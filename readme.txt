@@ -3,8 +3,8 @@ Contributors: abrg
 Donate link: https://www.goministry.com/
 Tags: church, ministry, bible, pray, prayer
 Requires at least: 5.0
-Tested up to: 6.1
-Stable tag: 1.9.7
+Tested up to: 6.2
+Stable tag: 1.9.8
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -99,6 +99,9 @@ When logged in to Wordpress, captcha does not show on website. Log out from Word
 
 == Changelog ==
 
+= 1.9.8 =
+* Option to change text on Pray button
+
 = 1.9.7 =
 * Sanitize maximum characters allowed in message box
 
@@ -110,26 +113,5 @@ When logged in to Wordpress, captcha does not show on website. Log out from Word
 
 = 1.9.4 =
 * Fix array error on admin manage prayers
-
-= 1.9.3 =
-* Fix javascript error on admin manage prayer comments
-
-= 1.9.2 =
-* Fix label on Praise Report Form
-
-= 1.9.1 =
-* Change Manage Prayers pagination to 20 rows
-
-= 1.9.0 =
-* Block prayer comments with hyperlinks
-
-= 1.8.9 =
-* Add option to show date on prayer listing instead of time ago
-
-= 1.8.8 =
-* Add option to show social media share button
-
-= 1.8.7 =
-* Block prayer requests with hyperlinks
 
 For older changelog entries, please see the [additional changelog.txt file](https://plugins.svn.wordpress.org/wp-prayer/trunk/changelog.txt) delivered with the plugin.

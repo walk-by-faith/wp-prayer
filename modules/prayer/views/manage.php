@@ -187,7 +187,7 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 		'prayer_status' 		=> __('Status',WPE_TEXT_DOMAIN),
 		'request_type' 			=> __('Type',WPE_TEXT_DOMAIN),
 		'prayer_time' 			=> __('Date',WPE_TEXT_DOMAIN),
-		'prayer_title' 			=> __('IP Address',WPE_TEXT_DOMAIN)."/".__('Title',WPE_TEXT_DOMAIN),
+		'prayer_title' 			=> __('IP Address',WPE_TEXT_DOMAIN),
 		);
 		$sortable  = array('prayer_messages','prayer_title','prayer_author','prayer_time','prayer_author_email','request_type','prayer_status','prayer_category','prayer_country');
 
