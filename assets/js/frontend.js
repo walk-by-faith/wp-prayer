@@ -73,3 +73,11 @@ function do_pray(pray_id,user_ip){
 	// function recaptchaCallback() {
 	//   $('#hiddenRecaptcha').valid();
 	// };
+
+jQuery(document).ready(function(){
+ var is_class = jQuery(".wpgmp-frontend").find("div").hasClass("alert-success");
+
+ if(is_class == true){
+   jQuery("#pr_form").hide();
+ }
+});
