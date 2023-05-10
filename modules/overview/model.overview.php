@@ -40,7 +40,7 @@ if ( ! class_exists( 'WPE_Model_Overview' ) ) {
 				prayer_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				prayer_lastname varchar(255) DEFAULT NULL,
 				prayer_country varchar(255) DEFAULT NULL,
-				prayer_category varchar(255) DEFAULT NULL,	
+				prayer_category varchar(255) DEFAULT NULL,
 				PRIMARY KEY (prayer_id)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;';
 			return $map_prayer;

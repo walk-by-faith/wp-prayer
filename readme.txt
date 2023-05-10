@@ -4,7 +4,7 @@ Donate link: https://www.goministry.com/
 Tags: church, ministry, bible, pray, prayer
 Requires at least: 5.0
 Tested up to: 6.2
-Stable tag: 1.9.8
+Stable tag: 2.0.2
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -98,6 +98,18 @@ When logged in to Wordpress, captcha does not show on website. Log out from Word
 4. Manage Prayers page
 
 == Changelog ==
+
+= 2.0.2 =
+* Add option to notify user when someone pray for the request
+
+= 2.0.1 =
+* Add status private to managed prayers
+
+= 2.0 =
+* Allow HTML Links/Hyperlinks in user email and admin email confirmation message box
+
+= 1.9.9 =
+* Hide prayer form after submission
 
 = 1.9.8 =
 * Option to change text on Pray button

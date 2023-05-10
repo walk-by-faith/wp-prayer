@@ -3,7 +3,7 @@
  * WP Prayer Engine class file.
  * @package Forms
  * @author Go Prayer
- * @version 1.9.8
+ * @version 2.0.2
  */
 
 /*
@@ -18,7 +18,7 @@ Author: Go Prayer
 
 Author URI: https://www.goprayer.com/
 
-Version: 1.9.8
+Version: 2.0.2
 
 Text Domain: wp-prayer
 
@@ -70,6 +70,7 @@ add_action('init', function () {
     //Sessions should always be started in 'init' hook.
 });
 
+
 if ( ! class_exists('WP_Prayer_Engine')) {
 
     /**
@@ -110,8 +111,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             
 
-            //add_action('wpe_prayer_recieved_perday', array( $this, 'wpe_prayer_recieved_perday_autoemail'));
-
+            //add_action('wpe_prayer_received_perday', array( $this, 'wpe_prayer_received_perday_autoemail'));
         }
 
         function wpe_select_engine_type($atts)
@@ -518,7 +518,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
                 switch_to_blog($currentblog);
 
-                update_site_option('op_activated', $activated);
+                update_site_option('op_activated', $activated);			
 
             } else {
 
@@ -526,13 +526,20 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             }
 
-            /**
-             *
-             * if ( ! wp_next_scheduled( 'wpe_prayer_recieved_perday' ) ) {
-             *
-             * wp_schedule_event( time(), 'daily', 'wpe_prayer_recieved_perday' );
-             *
-             * }**/
+			// Clean database to remove prayer users that doesnt have the assosiated prayer active
+			global $wpdb;
+			$table_prefix = $wpdb->base_prefix;
+			$user_table = $table_prefix."prayer_users";
+			$prayer_table = $table_prefix."prayer_engine";
+
+			$clean_db_query = "DELETE FROM $user_table WHERE prayer_id NOT IN (SELECT prayer_id FROM $prayer_table)";
+
+			$wpdb->query( $clean_db_query );
+            
+            
+            //if ( ! wp_next_scheduled( 'wpe_prayer_received_perday' ) ) {            
+            //wp_schedule_event( time(), 'daily', 'wpe_prayer_received_perday' );            
+            //}
 
         }
 
@@ -577,7 +584,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
             }
 
 
-            //wp_clear_scheduled_hook('wpe_prayer_recieved_perday');
+            wp_clear_scheduled_hook('wpe_prayer_received_perday');
 
         }
 
@@ -709,7 +716,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
             }
 
             // Load all modules.
-            $core_modules = array('overview', 'prayer', 'email_settings', 'settings', 'prayers_performed', 'export');
+            $core_modules = array('overview', 'prayer', 'email_settings', 'settings', 'export');
 
             if (is_array($core_modules)) {
 
@@ -844,9 +851,9 @@ if ( ! class_exists('WP_Prayer_Engine')) {
             $prayer_performed_obj = $modelFactory->create_object('prayers_performed');
 
             
-
-            
-
+            //if ( ! wp_next_scheduled( 'wpe_prayer_received_perday' ) ) {            
+            //wp_schedule_event( time(), 'daily', 'wpe_prayer_received_perday' );            
+            //}
 
             if ($value['user_ip'] != '') {
                 $prayer_performed_obj = $prayer_performed_obj->fetch(array(
@@ -863,7 +870,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
             
 
 
-            if (true || empty($prayer_performed_obj)) { // Aditional checks to see if user have performed prayer or not : Disabled by LXT
+            if (true || empty($prayer_performed_obj)) { 
 
                 if ($value['user_ip'] != '') {
                     $result = $prayer_obj->save_prayer_users($_POST['prayer_id'], '', $value['user_ip']);
@@ -872,50 +879,59 @@ if ( ! class_exists('WP_Prayer_Engine')) {
                 }
 
                 
-
+                $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
 
                 if ($result !== false) {
 
 
-                    /**
-                     *
-                     * // Auto-email
-                     *
-                     * $headers = array('Content-Type: text/html; charset=UTF-8');
-                     *
-                     * $user_info = get_userdata($value['user_id']);
-                     *
-                     * if(!empty($prayer['prayer_author_email']))
-                     *
-                     * $to = $prayer['prayer_author_email'];
-                     *
-                     * else{
-                     *
-                     * $prayer_author_info = get_userdata($prayer['prayer_author']);
-                     *
-                     * $to = $prayer_author_info->user_email;
-                     *
-                     * }
-                     *
-                     * if(!empty($to)){
-                     *
-                     * $subject = 'New Prayer Received' ;
-                     *
-                     * $body = 'Hello, <br> <p>You have received a prayer with following details :</p>';
-                     *
-                     * $body .= '<b>Prayer Title :</b> '.$prayer['prayer_title'].'<br>';
-                     *
-                     * $body .= '<b>User :</b> ';
-                     *
-                     * $body .=($user_info->display_name!='') ? $user_info->display_name :  'Unknown';
-                     *
-                     * $body .='<br>';
-                     *
-                     * wp_mail( $to, $subject, $body, $headers );
-                     *
-                     * return 'success';
-                     *
-                     * }**/
+                    
+                    
+                    // Auto-email
+                    
+                    $headers = array('Content-Type: text/html; charset=UTF-8');
+                    
+                    $user_info = get_userdata($value['user_id']);
+                    
+                    if(!empty($prayer['prayer_author_email']))
+                    
+                    $to = $prayer['prayer_author_email'];
+                    
+                    else{
+                    
+                    $prayer_author_info = get_userdata($prayer['prayer_author']);
+                    
+                    $to = $prayer_author_info->user_email;
+                    
+                    }
+                    if (isset($settings['wpe_autoemail'])&& $settings['wpe_autoemail'] == 'true' && $prayer['prayer_lastname']=='*') {
+                    if(!empty($to)){
+                    $email_settings = unserialize(get_option('_wpe_prayer_engine_email_settings'));
+                    add_filter('wp_mail_from', array($this, 'website_email'));
+                    add_filter('wp_mail_from_name', array($this, 'website_name'));
+                    
+                    $subject = (isset($email_settings['wpe_email_prayed_subject']) and ! empty($email_settings['wpe_email_prayed_subject'])) ? $email_settings['wpe_email_prayed_subject'] : 'Someone prayed for you';
+                    if (isset($email_settings['wpe_email_prayed_messages']) AND ! empty($email_settings['wpe_email_prayed_messages'])) {
+                        $body = stripslashes($email_settings['wpe_email_prayed_messages']);
+                        $body = str_replace(array(
+                            '{prayer_author_name}',
+                            '{prayer_messages}',
+                            ), array(
+                            $prayer['prayer_author_name'],
+							$prayer['prayer_messages'],
+                            ), $body);
+                            } else {
+                            $body = 'Hello '.$prayer['prayer_author_name'].', <br> <p>Someone prayed for you';
+     						$body .= '<b>Request :</b> '.$prayer['prayer_messages'].'<br>';
+							$body .= '<br>Blessings,<br/ >Prayer Team</p>';
+                            $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+							$body .= '<br>'.$link1;
+							}                                        
+                   
+                    wp_mail( $to, $subject, $body, $headers );
+                    
+                    return 'success';
+                    }
+                    }
 
                     return 'success';
 
@@ -927,14 +943,36 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
         }
 
+            public function website_email($sender)
+            {
+                $email_settings = unserialize(get_option('_wpe_prayer_engine_email_settings'));
+                $sitename = strtolower($_SERVER['SERVER_NAME']);
+                if (substr($sitename, 0, 4) == 'www.') {
+                    $sitename = substr($sitename, 4);
+                }
+                $illegal_chars_username = array('(', ')', '<', '>', ',', ';', ':', '\\', '"', '[', ']', '@', "'", ' ');
+                $username = str_replace($illegal_chars_username, "", get_option('blogname'));
+                $sender_emailuser = (isset($email_settings['wpe_email_user']) and ! empty($email_settings['wpe_email_user'])) ? $email_settings['wpe_email_user'] : $username.'@'.$sitename;
+                $sender_email = $sender_emailuser;
 
+                return $sender_email;
+            }
+
+            public function website_name($name)
+            {
+                $email_settings = unserialize(get_option('_wpe_prayer_engine_email_settings'));
+                $site_name = (isset($email_settings['wpe_email_from']) and ! empty($email_settings['wpe_email_from'])) ? $email_settings['wpe_email_from'] : get_option('blogname');
+
+                return $site_name;
+            }
         /**
          * Method to send email to prayer author daily
          */
 
-        public function wpe_prayer_recieved_perday_autoemail()
+        public function wpe_prayer_received_perday_autoemail()
         {
-
+            $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
+            if (isset($settings['wpe_autoemail'])&& $settings['wpe_autoemail'] == 'true') {
             $modelFactory = new FactoryModelWPE();
 
             $prayer_performed_obj = $modelFactory->create_object('prayers_performed');
@@ -956,20 +994,37 @@ if ( ! class_exists('WP_Prayer_Engine')) {
                         $to = $res->user_email;
                     }
 
-                    if ( ! empty($to)) {
-
-                        $subject = 'Prayers Received On '.date('F j, Y');
-
-                        $body = 'Hello, <br> <p>You have received total <b>'.$res->prayers_recieved.'</b> prayer(s) today for prayer <b>'.$res->prayer_title.'.</b></p>';
-
-                        wp_mail($to, $subject, $body, $headers);
+                    if ( ! empty($to) && $res->prayer_lastname=='*') {
+                    $email_settings = unserialize(get_option('_wpe_prayer_engine_email_settings'));
+                    add_filter('wp_mail_from', array($this, 'website_email'));
+                    add_filter('wp_mail_from_name', array($this, 'website_name'));
+                    
+                    $subject = (isset($email_settings['wpe_email_prayed_subject']) and ! empty($email_settings['wpe_email_prayed_subject'])) ? $email_settings['wpe_email_prayed_subject'] : 'Someone prayed for you';
+                    if (isset($email_settings['wpe_email_prayed_messages']) AND ! empty($email_settings['wpe_email_prayed_messages'])) {
+                        $body = stripslashes($email_settings['wpe_email_prayed_messages']);
+                        $body = str_replace(array(
+                            '{prayer_author_name}',
+                            '{prayer_messages}',
+                            ), array(
+                            $res->prayer_author_name,
+							$res->prayer_messages,
+                            ), $body);
+                            } else {
+                            $body = 'Hello '.$res->prayer_author_name.', <br> <p>Someone prayed for you';
+     						$body .= '<b>Request :</b> '.$res->prayer_messages.'<br>';
+							$body .= '<br>Blessings,<br/ >Prayer Team</p>';
+                            $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+							$body .= '<br>'.$link1;
+							}
+                   
+                    //wp_mail($to, $subject, $body, $headers);
 
                     }
 
                 endforeach;
 
             }
-
+            }
         }
 
     }
@@ -1419,3 +1474,10 @@ if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 } else {
 
 }
+
+add_action( 'admin_footer', 'custom_admin_footer_script' );
+add_action( 'wp_footer', 'custom_admin_footer_script' );
+
+function custom_admin_footer_script() { ?>
+    <script>var textareaNames=["prayer_messages","wpe_email_req_messages","wpe_email_praise_messages","wpe_email_admin_messages","wpe_terms_and_condition","wpe_email_prayed_messages"];textareaNames.forEach(function(e){var a=document.getElementsByName(e)[0];if(a){var s=a.value.replace(/\\(?=[\\/"'])/g,"");a.value=s}});</script>
+<?php }

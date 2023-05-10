@@ -93,9 +93,9 @@
 		} elseif($status == "private"){
 		$status1 = __('private',WPE_TEXT_DOMAIN);
 		} elseif($status == "approved"){	
-		$status1 = __('approved',WPE_TEXT_DOMAIN);
+		$status1 = __('Approved',WPE_TEXT_DOMAIN);
 		} elseif($status == "disapproved"){	
-		$status1 = __('disapproved',WPE_TEXT_DOMAIN);
+		$status1 = __('Disapproved',WPE_TEXT_DOMAIN);
 		}
        $export_table_rows.="<tr><td>$status</td><td>$message</td><td>$author</td><td>$email</td><td>$ptime</td></tr>";
 

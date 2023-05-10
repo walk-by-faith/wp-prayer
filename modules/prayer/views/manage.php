@@ -95,19 +95,21 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 			* @param array $item Map Row.
 			*/
 			public function column_prayer_status($item) {
-				if($item->prayer_status == 'pending' || $item->prayer_status == 'disapproved')
+				if($item->prayer_status == 'pending' || $item->prayer_status == 'disapproved' || $item->prayer_status == 'private')
 			$actions[ 'do_approve' ] = sprintf( '<a href="?page=%s&doaction=%s&'.$this->primary_col.'=%s">'.__('Approve',WPE_TEXT_DOMAIN).'</a>',$this->admin_listing_page_name,'do_approve',$item->{$this->primary_col} );
-				if($item->prayer_status == 'pending' || $item->prayer_status == 'approved')
+				if($item->prayer_status == 'pending' || $item->prayer_status == 'approved' || $item->prayer_status == 'private')
 			$actions[ 'disapprove' ] = sprintf( '<a href="?page=%s&doaction=%s&'.$this->primary_col.'=%s">'.__('Disapprove',WPE_TEXT_DOMAIN).'</a>',$this->admin_listing_page_name,'disapprove',$item->{$this->primary_col} );
-			$status = $item->prayer_status;	
+				if($item->prayer_status == 'pending' || $item->prayer_status == 'disapproved' || $item->prayer_status == 'approved')
+			$actions[ 'private' ] = sprintf( '<a href="?page=%s&doaction=%s&'.$this->primary_col.'=%s">'.__('private',WPE_TEXT_DOMAIN).'</a>',$this->admin_listing_page_name,'private',$item->{$this->primary_col} );
+            $status = $item->prayer_status;	
 			if($status == "pending"){
 			$status1 = __('pending',WPE_TEXT_DOMAIN);
 			} elseif($status == "private"){
 			$status1 = __('private',WPE_TEXT_DOMAIN);
 			} elseif($status == "approved"){	
-			$status1 = __('approved',WPE_TEXT_DOMAIN);
+			$status1 = __('Approved',WPE_TEXT_DOMAIN);
 			} elseif($status == "disapproved"){	
-			$status1 = __('disapproved',WPE_TEXT_DOMAIN);
+			$status1 = __('Disapproved',WPE_TEXT_DOMAIN);
 			}
 				
 				return sprintf( '%1$s %2$s', ucwords( $status1 ), $this->row_actions( $actions ));
@@ -149,6 +151,18 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 				$this->listing();
 			}
 			/**
+			* Private action.
+			*/
+			public function private(){
+				$id = intval( sanitize_text_field( $_GET[ $this->primary_col ] ) );
+				$modelFactory = new FactoryModelWPE();
+				$prayer_obj = $modelFactory->create_object( 'prayer' );
+				$res = $prayer_obj -> change_prayer_status($id,'private');
+				$this->prepare_items();
+				$this->response['success'] = __( ' '.ucwords( $this->singular_label ).' '.__('private',WPE_TEXT_DOMAIN), $this->textdomain );
+				$this->listing();
+			}			
+            /**
 			* Perform bulk action.
 			*/
 			function process_bulk_action(){
@@ -173,6 +187,15 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 					}
 				$this->response['success'] = (strpos( $ids, ',' ) !== false) ?  __('Disapproved', $this->textdomain ) : __('Disapproved', $this->textdomain );
 				
+				}elseif ( 'private' === $this->current_action() and ! empty( $ids ) ) {
+					$modelFactory = new FactoryModelWPE();
+					$prayer_obj = $modelFactory->create_object( 'prayer' );
+					$idArray = explode(",",$ids);
+					foreach ($idArray as $key => $value) {
+						$res = $prayer_obj -> change_prayer_status($value,'private');
+					}
+				$this->response['success'] = (strpos( $ids, ',' ) !== false) ?  __('private', $this->textdomain ) : __('Private', $this->textdomain );
+				
 				}
 			}
 
@@ -187,14 +210,15 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 		'prayer_status' 		=> __('Status',WPE_TEXT_DOMAIN),
 		'request_type' 			=> __('Type',WPE_TEXT_DOMAIN),
 		'prayer_time' 			=> __('Date',WPE_TEXT_DOMAIN),
-		'prayer_title' 			=> __('IP Address',WPE_TEXT_DOMAIN),
+		'prayer_title' 			=> __('IP address',WPE_TEXT_DOMAIN),
 		);
 		$sortable  = array('prayer_messages','prayer_title','prayer_author','prayer_time','prayer_author_email','request_type','prayer_status','prayer_category','prayer_country');
 
 	if(isset($settings['wpe_hide_prayer_count']) && $settings['wpe_hide_prayer_count'] =='false'){$columns['prayer_count'] = 'Count';}
-	if(isset($settings['wpe_category']) && $settings['wpe_category'] =='true'){$columns['prayer_category'] = 'Category';}
+    if(isset($settings['wpe_autoemail']) && $settings['wpe_autoemail']=='true'){$columns['prayer_lastname'] = 'Notify';}
+    if(isset($settings['wpe_category']) && $settings['wpe_category'] =='true'){$columns['prayer_category'] = 'Category';}
 	if(isset($settings['wpe_country']) && $settings['wpe_country']=='true'){$columns['prayer_country'] = 'Country';}
-
+    
 		$tableinfo = array(
 		'table' => WPE_TBL_PRAYER,
 		'textdomain' => WPE_TEXT_DOMAIN,
@@ -206,11 +230,11 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayer_Tab
 		'columns' => $columns,
 		'sortable' => $sortable,
 		'per_page' => 20,
-		'actions' => array( 'edit','delete','prayers'=>'Prayers'),
+		'actions' => array( 'edit','delete'),
 		'col_showing_links' => 'prayer_messages',
 		'currenttimestamp_field' => 'prayer_time',
 		'admin_view_page_name' => 'wpe_manage_prayers_performed',
-		'bulk_actions' => array('approve'=>__('Approve',WPE_TEXT_DOMAIN),'disapprove'=>__('Disapprove',WPE_TEXT_DOMAIN)),
+		'bulk_actions' => array('approve'=>__('Approve',WPE_TEXT_DOMAIN),'disapprove'=>__('Disapprove',WPE_TEXT_DOMAIN),'private'=>__('private',WPE_TEXT_DOMAIN)),
 		);
 		return new WPE_Prayer_Table( $tableinfo );
 	}

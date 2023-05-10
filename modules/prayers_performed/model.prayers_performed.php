@@ -53,7 +53,7 @@ if ( ! class_exists( 'WPE_Model_Prayers_Performed' ) ) {
 		 */
 		public function fetch_prayers_recieved_perday(){
 			global $wpdb;
-			echo $query = "SELECT pe.prayer_title, pe.prayer_author_email, usr.user_email, COUNT(pu.$this->unique) as prayers_recieved FROM {$wpdb->prefix}prayer_engine pe INNER JOIN $this->table pu ON pe.prayer_id=pu.prayer_id LEFT JOIN {$wpdb->prefix}users usr ON pe.prayer_author=usr.ID WHERE date(pu.prayer_time) = '".date('Y-m-d')."' GROUP BY pe.prayer_id, usr.user_email";
+			echo $query = "SELECT pe.prayer_messages, pe.prayer_author_name, pe.prayer_lastname, pe.prayer_author_email, usr.user_email, COUNT(pu.$this->unique) as prayers_recieved FROM {$wpdb->prefix}prayer_engine pe INNER JOIN $this->table pu ON pe.prayer_id=pu.prayer_id LEFT JOIN {$wpdb->prefix}users usr ON pe.prayer_author=usr.ID WHERE date(pu.prayer_time) = '".date('Y-m-d')."' GROUP BY pe.prayer_id, usr.user_email";
 			$results = $this->query($query);
 			return $results;
 		}

@@ -66,6 +66,7 @@ if ( ! class_exists( 'WPE_Model_Settings' ) ) {
 			'wpe_date'		 	 		 => (empty($_POST['wpe_date'])) ? 'false' : sanitize_text_field( $_POST['wpe_date'] ),
 			'wpe_ago'		 	 		 => (empty($_POST['wpe_ago'])) ? 'false' : sanitize_text_field( $_POST['wpe_ago'] ),			
 			'wpe_social'		 	 	 => (empty($_POST['wpe_social'])) ? 'false' : sanitize_text_field( $_POST['wpe_social'] ),
+            'wpe_autoemail'		 	 	 => (empty($_POST['wpe_autoemail'])) ? 'false' : sanitize_text_field( $_POST['wpe_autoemail'] ),    
 			'wpe_prayer_time_interval'                => sanitize_text_field( $_POST['wpe_prayer_time_interval'] ),
             'wpe_prayer_comment'		 	 => (empty($_POST['wpe_prayer_comment'])) ? 'false' : sanitize_text_field( $_POST['wpe_prayer_comment'] ),
             'wpe_prayer_comment_status'		 	 => (empty($_POST['wpe_prayer_comment_status'])) ? 'false' : sanitize_text_field( $_POST['wpe_prayer_comment_status'] ),

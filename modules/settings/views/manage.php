@@ -188,7 +188,16 @@ $form->add_element( 'checkbox', 'wpe_country', array(
 $form->add_element( 'checkbox', 'wpe_share', array(
 	'label' => __( 'Share', WPE_TEXT_DOMAIN ),
 	'current' => (isset( $data['wpe_share'] ) and ! empty( $data['wpe_share'] )) ? $data['wpe_share'] : '',
-	'desc' => __( 'No, keep prayer request private', WPE_TEXT_DOMAIN ),
+	'desc' => __( 'Do not share this request', WPE_TEXT_DOMAIN ),
+	'class' => 'form-control ',
+	'before' => '<div class="col-md-6">',
+	'after' => '</div>',
+	'value' => 'true',
+));
+
+$form->add_element( 'checkbox', 'wpe_autoemail', array(
+	'current' => (isset( $data['wpe_autoemail'] ) and ! empty( $data['wpe_autoemail'] )) ? $data['wpe_autoemail'] : '',
+	'desc' => __( 'email user when someone pray for the request', WPE_TEXT_DOMAIN ),
 	'class' => 'form-control ',
 	'before' => '<div class="col-md-6">',
 	'after' => '</div>',

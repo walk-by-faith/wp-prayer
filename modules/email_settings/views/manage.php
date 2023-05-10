@@ -16,12 +16,13 @@ if ( isset( $_REQUEST['_wpnonce'] ) ) {
 	}
 }
 
-
+$link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
 // Setting up defaults for email
 $default = array(
 		'wpe_email_req_subject' => 'Prayer request confirmation',
 		'wpe_email_praise_subject' => 'Praise report confirmation',
 		'wpe_email_admin_subject' => 'New {request_type} received',
+        'wpe_email_prayed_subject' => 'Someone prayed for you',
 	);
 
 $default['wpe_email_req_messages'] = '
@@ -31,8 +32,8 @@ Hello {prayer_author_name},<br />
 <p>Request: {prayer_messages}</p>
 
 Blessings, <br />
-Prayer Team';
-
+Prayer Team <br />
+'.$link1;
 
 $default['wpe_email_praise_messages'] = '
 Hello {prayer_author_name},<br />
@@ -41,8 +42,8 @@ Hello {prayer_author_name},<br />
 <p>Praise: {prayer_messages}</p>
 
 Blessings,<br />
-Prayer Team';
-
+Prayer Team <br />
+'.$link1;
 
 $default['wpe_email_admin_messages'] = '
 Hello,<br />
@@ -53,8 +54,18 @@ Hello,<br />
 <p>Request: {prayer_messages}</p>
 
 Blessings, <br />
-Prayer Team';
+Prayer Team <br />
+'.$link1;
 
+$default['wpe_email_prayed_messages'] = '
+Hello {prayer_author_name},<br />
+
+<p>Someone prayed for you.</p>
+<p>Request: {prayer_messages}</p>
+
+Blessings, <br />
+Prayer Team <br />
+'.$link1;
 	
 $data = unserialize(get_option( '_wpe_prayer_engine_email_settings' ));
 
@@ -103,7 +114,7 @@ $form->add_element( 'text','wpe_email_from', array(
 	));
 
 $illegal_chars_username = array('(', ')', '<', '>', ',', ';', ':', '\\', '"', '[', ']', '@', "'", ' ');
-$domain = preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+$domain = preg_replace('#^www.#', '', strtolower($_SERVER['SERVER_NAME']));
 $username = str_replace ($illegal_chars_username, "", $wp_admin_from);
 
 $form->add_element( 'text','wpe_email_user', array(
@@ -159,7 +170,6 @@ $form->add_element( 'text', 'wpe_email_praise_subject', array(
 	'placeholder' => __( 'Praise Report Subject', WPE_TEXT_DOMAIN ),
 	'id' => 'wpe_email_praise_subject',
 ));
-
 $form->add_element( 'textarea', 'wpe_email_praise_messages', array(
 	'label' => __( 'Praise Report Message', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_praise_messages'] ) and ! empty( $data['wpe_email_praise_messages'] )) ?  $data['wpe_email_praise_messages']  : $default['wpe_email_praise_messages'],
@@ -193,6 +203,33 @@ $form->add_element( 'textarea', 'wpe_email_admin_messages', array(
 	'textarea_rows' => 15,
 	'required' => false,
 	'textarea_name' => 'wpe_email_admin_messages',
+	'class' => 'form-control email-msg editor',
+));
+
+/***
+ *  Someone prayed for you 
+ */
+$form->add_element( 'div', 'prayer_prayed_heading', array(
+			'class'	=> 'col-md-12 no-padding',
+			'value' => '<h4>'.__('Someone prayed for you message',WPE_TEXT_DOMAIN). '</h4><hr />',
+	));
+
+$form->add_element( 'text', 'wpe_email_prayed_subject', array(
+	'label' => __( 'email subject', WPE_TEXT_DOMAIN ),
+	'value' => (isset( $data['wpe_email_prayed_subject'] ) and ! empty( $data['wpe_email_prayed_subject'] )) ? $data['wpe_email_prayed_subject'] : $default['wpe_email_prayed_subject'],
+	'required' => false,
+	'placeholder' => __( 'Someone prayed for you', WPE_TEXT_DOMAIN ),
+	'id' => 'wpe_email_prayed_subject',
+	'class' => 'form-control ',
+));
+
+$form->add_element( 'textarea', 'wpe_email_prayed_messages', array(
+	'label' => __( 'Message', WPE_TEXT_DOMAIN ),
+	'value' => (isset( $data['wpe_email_prayed_messages'] ) and ! empty( $data['wpe_email_prayed_messages'] )) ?  $data['wpe_email_prayed_messages']  : $default['wpe_email_prayed_messages'],
+
+	'textarea_rows' => 15,
+	'required' => false,
+	'textarea_name' => 'wpe_email_prayed_messages',
 	'class' => 'form-control email-msg editor',
 ));
 

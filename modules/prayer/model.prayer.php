@@ -118,8 +118,8 @@ if ( ! class_exists('WPE_Model_Prayer')) {
                 $data['prayer_status'] = (filter_var($lxt_options['wpe_disapprove_prayer_default'],
                     FILTER_VALIDATE_BOOLEAN)) ? 'pending' : 'approved';
             }
-
-
+            
+            if (isset($_POST['prayer_notify']) && ! empty($_POST['prayer_notify'])) {$data['prayer_lastname'] ='*';} else {$data['prayer_lastname'] ='';}
             $data['request_type'] = sanitize_text_field($_POST['request_type']);
 
             if ($entityID > 0) {

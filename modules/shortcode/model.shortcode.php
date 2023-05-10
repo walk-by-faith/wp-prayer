@@ -88,13 +88,10 @@
                         $data['prayer_status'] = (filter_var($lxt_options['wpe_disapprove_prayer_default'],
                             FILTER_VALIDATE_BOOLEAN)) ? 'pending' : 'approved';
                     }
-					 if (isset($_POST['prayer_public'])) {
-                        $prayer_public1 = sanitize_text_field($_POST['prayer_public']);
-						if ($prayer_public1 == 'No_Public') {$data['prayer_status'] = 'private';}					
-                    }
+					if (isset($_POST['prayer_public'])) {$data['prayer_status'] = 'private';}
                     $data['prayer_author_email'] = (isset($_POST['prayer_author_email'])) ? sanitize_text_field($_POST['prayer_author_email']) : '';
                     $data['prayer_author_name'] = sanitize_text_field($_POST['prayer_author_name']);
-
+                    if (isset($_POST['prayer_notify']) && ! empty($_POST['prayer_notify'])) {$data['prayer_lastname'] ='*';}
 
                     if (isset($_POST['prayer_country'])) {
                         $data['prayer_country'] = sanitize_text_field($_POST['prayer_country']);
@@ -154,7 +151,7 @@
                                 if ($data['request_type'] == 'prayer_request') {
                                     $subject = (isset($email_settings['wpe_email_req_subject']) and ! empty($email_settings['wpe_email_req_subject'])) ? $email_settings['wpe_email_req_subject'] : 'Prayer request confirmation';
                                     if (isset($email_settings['wpe_email_req_messages']) AND ! empty($email_settings['wpe_email_req_messages'])) {
-                                        $body = $email_settings['wpe_email_req_messages'];
+                                        $body = stripslashes($email_settings['wpe_email_req_messages']);
                                         $body = str_replace(array(
                                             '{prayer_author_name}',
 											'{prayer_messages}',
@@ -168,12 +165,13 @@
                                         $body .= '. We welcome all requests and we delight in lifting you and your requests up to God in prayer. God Bless you, and remember, God knows the prayers that are coming and hears them even before they are spoken.</p>';
 										$body .= '<b>Request :</b> '.$data['prayer_messages'].'<br>';
 										$body .= '<br>Blessings,<br/ >Prayer Team</p>';
-
+                                        $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+										$body .= '<br>'.$link1;
 									}
                                 } else {
                                     $subject = (isset($email_settings['wpe_email_praise_subject']) and ! empty($email_settings['wpe_email_praise_subject'])) ? $email_settings['wpe_email_praise_subject'] : 'Praise report confirmation';
                                     if (isset($email_settings['wpe_email_praise_messages']) AND ! empty($email_settings['wpe_email_praise_messages'])) {
-                                        $body = $email_settings['wpe_email_praise_messages'];
+                                        $body = stripslashes($email_settings['wpe_email_praise_messages']);
                                         $body = str_replace(array(
                                             '{prayer_author_name}',
 											'{prayer_messages}',
@@ -187,7 +185,8 @@
                                         $body .= '. We welcome all requests and we delight in lifting you and your requests up to God in prayer. God Bless you, and remember, God knows the prayers that are coming and hears them even before they are spoken.</p>';
 										$body .= '<b>Praise :</b> '.$data['prayer_messages'].'<br>';
 										$body .= '<br>Blessings,<br/ >Prayer Team</p>';
-
+                                        $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+										$body .= '<br>'.$link1;
 									}
                                 }
                                 wp_mail($to, $subject, $body, $headers);
@@ -212,7 +211,7 @@
                                 $request_type,
                             ), $subject);
                             if (isset($email_settings['wpe_email_admin_messages']) AND ! empty($email_settings['wpe_email_admin_messages'])) {
-                                $body = $email_settings['wpe_email_admin_messages'];
+                                $body = stripslashes($email_settings['wpe_email_admin_messages']);
                                 $body = str_replace(array(
                                     '{prayer_author_name}',
                                     '{prayer_author_email}',
@@ -235,6 +234,8 @@
                                 }
                                 $body .= '<b>Request :</b> '.$data['prayer_messages'].'<br>';
                                 $body .= '<br>Thank you';
+                                $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+								$body .= '<br>'.$link1;
                             }
                             wp_mail($to, $subject, $body, $headers);
                         }
@@ -404,7 +405,7 @@
                                     if ($data['request_type'] == 'prayer_request') {
                                         $subject = (isset($email_settings['wpe_email_req_subject']) and ! empty($email_settings['wpe_email_req_subject'])) ? $email_settings['wpe_email_req_subject'] : 'Prayer request confirmation';
                                         if (isset($email_settings['wpe_email_req_messages']) AND ! empty($email_settings['wpe_email_req_messages'])) {
-                                            $body = $email_settings['wpe_email_req_messages'];
+                                            $body = stripslashes($email_settings['wpe_email_req_messages']);
                                             $body = str_replace(array(
                                                 '{prayer_author_name}',
                                             ), array(
@@ -414,11 +415,13 @@
                                             $body = 'Hello '.$data['prayer_author_name'].', <br> <p>Thank you for submitting your ';
                                             $body .= 'prayer request';
                                             $body .= '. We welcome all requests and we delight in lifting you and your requests up to God in prayer. God Bless you, and remember, God knows the prayers that are coming and hears them even before they are spoken.<br /><br />Blessings,<br/ >Prayer Team</p>';
+                                            $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+                                            $body .= '<br>'.$link1;
                                         }
                                     } else {
                                         $subject = (isset($email_settings['wpe_email_praise_subject']) and ! empty($email_settings['wpe_email_praise_subject'])) ? $email_settings['wpe_email_praise_subject'] : 'Praise report confirmation';
                                         if (isset($email_settings['wpe_email_praise_messages']) AND ! empty($email_settings['wpe_email_praise_messages'])) {
-                                            $body = $email_settings['wpe_email_praise_messages'];
+                                            $body = stripslashes($email_settings['wpe_email_praise_messages']);
                                             $body = str_replace(array(
                                                 '{prayer_author_name}',
                                             ), array(
@@ -428,6 +431,8 @@
                                             $body = 'Hello '.$data['prayer_author_name'].', <br> <p>Thank you for submitting your ';
                                             $body .= 'praise report';
                                             $body .= '. We welcome all requests and we delight in lifting you and your requests up to God in prayer. God Bless you, and remember, God knows the prayers that are coming and hears them even before they are spoken.<br /><br />Blessings,<br/ >Prayer Team</p>';
+                                            $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+                                            $body .= '<br>'.$link1;
                                         }
                                     }
                                     wp_mail($to, $subject, $body, $headers);
@@ -451,7 +456,7 @@
                                     $request_type,
                                 ), $subject);
                                 if (isset($email_settings['wpe_email_admin_messages']) AND ! empty($email_settings['wpe_email_admin_messages'])) {
-                                    $body = $email_settings['wpe_email_admin_messages'];
+                                    $body = stripslashes($email_settings['wpe_email_admin_messages']);
                                     $body = str_replace(array(
                                         '{prayer_author_name}',
                                         '{prayer_author_email}',
@@ -474,6 +479,8 @@
                                     }
                                     $body .= '<b>Request :</b> '.$data['prayer_messages'].'<br>';
                                     $body .= '<br>Thank you';
+                                    $link=$_SERVER["SERVER_NAME"];$link1= '<a href="https://www.'.$link.'">Visit '.$link.'</a>';
+									$body .= '<br>'.$link1;
                                 }
                                 wp_mail($email_settings['prayer_req_admin_email'], $subject, $body, $headers);
                             }

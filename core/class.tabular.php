@@ -663,13 +663,16 @@ if ( ! class_exists( 'WP_List_Table_Helper1' ) ) {
             }
 			$comment_table=$table_prefix."prayer_comment";
 			$comm_query="DELETE FROM $comment_table WHERE {$this->primary_col} = ".$id;
-
+			
+			$user_table=$table_prefix."prayer_users";
+			$user_query="DELETE FROM $user_table WHERE {$this->primary_col} = ".$id;
 
 			$del = $wpdb->query( $query );
 
 			$wpdb->query( $comm_query );
 
-
+			$wpdb->query( $user_query );
+			
 			$this->prepare_items();
 
 
@@ -1225,11 +1228,15 @@ if ( ! class_exists( 'WP_List_Table_Helper1' ) ) {
 				}
 
 
- $comment_table=$table_prefix."prayer_comment";
+ 				$comment_table=$table_prefix."prayer_comment";
 			    $comm_query="DELETE FROM $comment_table WHERE {$this->primary_col} IN($ids)";
+				
+				$user_table=$table_prefix."prayer_users";
+				$user_query="DELETE FROM $user_table WHERE {$this->primary_col} IN($ids)";
 
 				$del = $wpdb->query( $query );
-$wpdb->query( $comm_query );
+				$wpdb->query( $comm_query );
+				$wpdb->query( $user_query );
 
 				$this->response['success'] = (strpos( $ids, ',' ) !== false) ?  __( " {$this->plural_label} Deleted", $this->textdomain ) : __( ucwords( $this->singular_label ).' '.__('Deleted',WPE_TEXT_DOMAIN), $this->textdomain );
 

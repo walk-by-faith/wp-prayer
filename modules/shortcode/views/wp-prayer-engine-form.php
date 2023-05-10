@@ -12,7 +12,7 @@ if(isset($shortcode_atts)) {
 }
 
 $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
-$prayerType1= __( 'Prayer Request', WPE_TEXT_DOMAIN );if($prayerType === 'praise')  {$prayerType1 = __( 'Praise Report', WPE_TEXT_DOMAIN );}
+$prayerType1= __( 'Request', WPE_TEXT_DOMAIN );if($prayerType === 'praise')  {$prayerType1 = __( 'Praise Report', WPE_TEXT_DOMAIN );}
 //making prayer type compatible with our below code
 if($prayerType === 'prayer')  $prayerType = 'prayer_request';
 elseif($prayerType === 'praise') $prayerType = 'praise_report';
@@ -449,14 +449,23 @@ $form->add_element( 'textarea', 'prayer_messages', array(
 
 ));
 if ($prayerType <> 'praise_report' && isset($settings['wpe_share']) && $settings['wpe_share']=='true') {
-$prayer_public = array(
-"Yes_Public" => __('Yes, share prayer request',WPE_TEXT_DOMAIN),
-"No_Public" => __('No, keep prayer request private',WPE_TEXT_DOMAIN),
-);
-$form->add_element( 'select', 'prayer_public', array(
-'label' => __( 'Share', WPE_TEXT_DOMAIN ),
-'options' => $prayer_public,
+$form->add_element( 'checkbox', 'prayer_public', array(
+'desc' => __( 'Do not share this request', WPE_TEXT_DOMAIN ),
+'current' => (isset( $data['prayer_public'] ) and ! empty( $data['prayer_public'] )) ? $data['prayer_public'] : '',
+'default_value' => 'unchecked',
+'class' => 'form-control ',
+'before' => '<div class="col-md-6">', 
+'after' => '</div>',
+));
+}
 
+if ($prayerType <> 'praise_report' && isset($settings['wpe_autoemail']) && $settings['wpe_autoemail']=='true') {
+$form->add_element( 'checkbox', 'prayer_notify', array(
+'desc' => __( 'Notify me when someone prays for this request', WPE_TEXT_DOMAIN ),
+'current' => (isset( $data['prayer_notify'] ) and ! empty( $data['prayer_notify'] )) ? $data['prayer_notify'] : '',
+'default_value' => 'unchecked',
+'class' => 'chkbox_class',    
+'before' => '<div class="col-md-6">',  
 ));
 }
 

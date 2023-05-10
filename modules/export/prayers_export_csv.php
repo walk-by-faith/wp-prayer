@@ -25,9 +25,9 @@ foreach ($export_table_records  as $key => $export_table_record) {
 		} elseif($status == "private"){
 		$status1 = __('private',WPE_TEXT_DOMAIN);
 		} elseif($status == "approved"){	
-		$status1 = __('approved',WPE_TEXT_DOMAIN);
+		$status1 = __('Approved',WPE_TEXT_DOMAIN);
 		} elseif($status == "disapproved"){	
-		$status1 = __('disapproved',WPE_TEXT_DOMAIN);
+		$status1 = __('Disapproved',WPE_TEXT_DOMAIN);
 		}
     $user_arr[] = array($status,$message,$author,$email,$ptime);
 }

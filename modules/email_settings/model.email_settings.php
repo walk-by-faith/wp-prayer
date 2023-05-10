@@ -37,12 +37,15 @@ if ( ! class_exists( 'WPE_Model_Email_Settings' ) ) :
 				'wpe_email_from'	 => sanitize_text_field($_POST['wpe_email_from'] ),
 				'wpe_email_cc'		 => sanitize_text_field($_POST['wpe_email_cc'] ),
 				'wpe_email_user'	 => sanitize_email($_POST['wpe_email_user'] ),
-				'wpe_email_req_subject'  => sanitize_text_field( $_POST['wpe_email_req_subject']),
-				'wpe_email_req_messages' => wp_filter_post_kses($_POST['wpe_email_req_messages'] ),
+				'wpe_email_req_subject'  => sanitize_text_field($_POST['wpe_email_req_subject']),
+				'wpe_email_req_messages' => wp_filter_post_kses(stripslashes($_POST['wpe_email_req_messages'] )),
 				'wpe_email_praise_subject' => sanitize_text_field( $_POST['wpe_email_praise_subject'] ),
-				'wpe_email_praise_messages' => wp_filter_post_kses($_POST['wpe_email_praise_messages']),
+				'wpe_email_praise_messages' => wp_filter_post_kses(stripslashes($_POST['wpe_email_praise_messages'])),
 				'wpe_email_admin_subject' => sanitize_text_field( $_POST['wpe_email_admin_subject'] ),
-				'wpe_email_admin_messages' => wp_filter_post_kses($_POST['wpe_email_admin_messages'] ), 			);
+				'wpe_email_admin_messages' => wp_filter_post_kses(stripslashes($_POST['wpe_email_admin_messages'] )),
+                'wpe_email_prayed_subject'  => sanitize_text_field($_POST['wpe_email_prayed_subject']),
+				'wpe_email_prayed_messages' => wp_filter_post_kses(stripslashes($_POST['wpe_email_prayed_messages'] )),
+                );
 
 			//$settings = unserialize(get_option('_wpe_prayer_engine_settings'));
 			//$wpe_value_array = array_merge($settings, $wpe_value_array);

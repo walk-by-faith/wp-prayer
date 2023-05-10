@@ -48,13 +48,21 @@ $form->add_element( 'text', 'prayer_title', array(
 ));
 $form->add_element( 'textarea', 'prayer_messages', array(
 'label' => __( 'Prayer Request', WPE_TEXT_DOMAIN ),
-'value' => (isset( $data['prayer_messages'] ) and ! empty( $data['prayer_messages'] )) ?  $data['prayer_messages']  : '',
+'value' => (isset( $data['prayer_messages'] ) and ! empty( $data['prayer_messages'] )) ? stripslashes($data['prayer_messages'])   : '',
 'desc' => __( 'Prayer Request', WPE_TEXT_DOMAIN ),
 'textarea_rows' => 10,
 'required' => true,
 'textarea_name' => 'prayer_messages',
 'class' => 'form-control',
 ));
+if ( isset( $data['request_type']) && $data['request_type']='prayer_request' ) {
+$data['prayer_notify']='unchecked';if(isset($data['prayer_lastname']) && ! empty($data['prayer_lastname'])) {$data['prayer_notify'] ='';}
+$form->add_element( 'checkbox', 'prayer_notify', array(
+'desc' => __( 'Notify', WPE_TEXT_DOMAIN ),    
+'value' => (isset( $data['prayer_notify'] ) and ! empty( $data['prayer_notify'] )) ? ($data['prayer_notify'])   : '',
+'class' => 'chkbox_class',
+));
+}
 $form->add_element( 'submit', 'save_entity_data', array(
 'value' => __( 'Save',WPE_TEXT_DOMAIN ),
 ));
