@@ -5,6 +5,18 @@
 This file contains older changelog entries, so we can keep the size of the standard WordPress readme.txt file reasonable.
 For the latest changes, please see the "Changelog" section of the [readme.txt file](https://plugins.svn.wordpress.org/wp-prayer/trunk/readme.txt)
 
+= 1.9.7 =
+* Sanitize maximum characters allowed in message box
+
+= 1.9.6 =
+* Add IP address to manage prayers and add honeypot for spam protection
+
+= 1.9.5 =
+* Fix option to display name on praise report
+
+= 1.9.4 =
+* Fix array error on admin manage prayers
+
 = 1.9.3 =
 * Fix javascript error on admin manage prayer comments
 

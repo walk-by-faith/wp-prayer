@@ -27,7 +27,7 @@ if ( ! class_exists( 'WPE_Model_Prayers_Performed' ) ) {
 		 */
 		public function navigation() {
 			return array(
-			'wpe_manage_prayers_performed' => __( 'Manage Prayers Performed', WPE_TEXT_DOMAIN ),
+			'wpe_manage_prayers_performed' => 'Manage Prayers Performed',
 			);
 		}
 

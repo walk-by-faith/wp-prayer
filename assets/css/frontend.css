@@ -160,7 +160,7 @@
 
 .wpgmp-frontend  .alert-danger{ padding:10px; font-size:14px; background:#faddb7; border:1px solid #bf8c4b; color:#7d4c0c; margin-bottom:15px;}
 
-.wpgmp-frontend  .alert-success{ padding:10px; font-size:14px; background:#c1fbe9; border:1px solid #84d7bd; color:#176a50; margin-bottom:15px;}
+.wpgmp-frontend  .alert-success{ padding:10px; font-size:14px; border:1px solid black; margin-bottom:15px;}
 
 .wpgmp-frontend    .close{display:none;}
 

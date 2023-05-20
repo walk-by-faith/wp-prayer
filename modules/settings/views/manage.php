@@ -30,7 +30,7 @@ $form->add_element( 'text', 'wpe_prayer_btn_color', array(
 	'label' => __( 'Submit Button Color', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_prayer_btn_color'] ) and ! empty( $data['wpe_prayer_btn_color'] )) ? $data['wpe_prayer_btn_color'] : '',
 	'desc' => __( 'Color code in Hex or Text #CCCCCC or RED', WPE_TEXT_DOMAIN ),
-	'placeholder' => __( '#CCCCCC', WPE_TEXT_DOMAIN ),
+	'placeholder' => '#CCCCCC',
 ));
 
 $form->add_element( 'text', 'wpe_prayer_btn_text_color', array(
@@ -165,14 +165,14 @@ $form->add_element( 'text', 'wpe_prayer_Site_Key', array(
     'label' => __( 'Google reCaptcha v3 Site Key', WPE_TEXT_DOMAIN ),
     'value' => (isset( $data['wpe_prayer_site_key'] ) and ! empty( $data['wpe_prayer_site_key'] )) ? $data['wpe_prayer_site_key'] : '0',
    
-    'placeholder' => __( '6LeG_2QUAAAAAIw5Qj9eyTlt_sATdOmTHesbwert', WPE_TEXT_DOMAIN ),
+    'placeholder' => '6LeG_2QUAAAAAIw5Qj9eyTlt_sATdOmTHesbwert',
 ));
 
 $form->add_element( 'text', 'wpe_prayer_secret_key', array(
     'label' => __( 'Google reCaptcha v3 secret key', WPE_TEXT_DOMAIN ),
     'value' => (isset( $data['wpe_prayer_secret_key'] ) and ! empty( $data['wpe_prayer_secret_key'] )) ? $data['wpe_prayer_secret_key'] : '0',
     
-    'placeholder' => __( '6LeG_2QUAAAAAIw5Qj9eyTlt_sATdOmTHesbwert', WPE_TEXT_DOMAIN ),
+    'placeholder' => '6LeG_2QUAAAAAIw5Qj9eyTlt_sATdOmTHesbwert',
 ));
 
 $form->add_element( 'checkbox', 'wpe_country', array(
@@ -301,6 +301,16 @@ $form->add_element( 'select', 'wpe_fetch_req_from', array(
 	'before' => '<div class="col-md-4">',
 	'after' => '</div>',
 ));
+
+$form->add_element( 'textarea', 'wpe_thankyou', array(
+	'label' => __( 'Thank you message', WPE_TEXT_DOMAIN ),
+	'value' => (isset( $data['wpe_thankyou'] ) and ! empty( $data['wpe_thankyou'] )) ? $data['wpe_thankyou'] : '',
+    'class' => 'form-control email-msg editor',
+	'placeholder' => __( 'Thank you. Your form has been received.', WPE_TEXT_DOMAIN ),
+    'textarea_name' => 'wpe_thankyou',
+    'textarea_rows' => 15,
+));
+
 $form->add_element('submit','wpe_save_settings',array(
 	'value' => __( 'Save Settings',WPE_TEXT_DOMAIN ),
 	));

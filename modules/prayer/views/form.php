@@ -39,11 +39,11 @@ $form->add_element( 'radio', 'request_type', array(
 'required' => true,
 ));
 $form->add_element( 'text', 'prayer_title', array(
-'label' => __( 'IP Address', WPE_TEXT_DOMAIN ),
+'label' => __( 'IP address', WPE_TEXT_DOMAIN ),
 'value' => (isset( $data['prayer_title'] ) and ! empty( $data['prayer_title'] )) ? $data['prayer_title'] : '',
-'desc' => __( 'IP Address', WPE_TEXT_DOMAIN ),
+'desc' => __( 'IP address', WPE_TEXT_DOMAIN ),
 'required' => true,
-'placeholder' => __( 'IP Address', WPE_TEXT_DOMAIN ),
+'placeholder' => __( 'IP address', WPE_TEXT_DOMAIN ),
 'id' => 'prayer_title_row',
 ));
 $form->add_element( 'textarea', 'prayer_messages', array(
@@ -55,7 +55,8 @@ $form->add_element( 'textarea', 'prayer_messages', array(
 'textarea_name' => 'prayer_messages',
 'class' => 'form-control',
 ));
-if ( isset( $data['request_type']) && $data['request_type']='prayer_request' ) {
+$settings = unserialize(get_option('_wpe_prayer_engine_settings'));
+if (isset($settings['wpe_autoemail'])&& $settings['wpe_autoemail'] == 'true') {
 $data['prayer_notify']='unchecked';if(isset($data['prayer_lastname']) && ! empty($data['prayer_lastname'])) {$data['prayer_notify'] ='';}
 $form->add_element( 'checkbox', 'prayer_notify', array(
 'desc' => __( 'Notify', WPE_TEXT_DOMAIN ),    

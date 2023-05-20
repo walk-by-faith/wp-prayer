@@ -3,7 +3,7 @@
  * WP Prayer Engine class file.
  * @package Forms
  * @author Go Prayer
- * @version 2.0.2
+ * @version 2.0.3
  */
 
 /*
@@ -18,7 +18,7 @@ Author: Go Prayer
 
 Author URI: https://www.goprayer.com/
 
-Version: 2.0.2
+Version: 2.0.3
 
 Text Domain: wp-prayer
 
@@ -1318,7 +1318,7 @@ function prayer_commant_function()
 
         <tr>
 
-            <th><?php _e('Title', WPE_TEXT_DOMAIN); ?></th>
+            <th><?php _e('IP address', WPE_TEXT_DOMAIN); ?></th>
 
             <th><?php _e('Comment', WPE_TEXT_DOMAIN); ?></th>
 
@@ -1340,7 +1340,7 @@ function prayer_commant_function()
 
         <tr>
 
-            <th><?php _e('Title', WPE_TEXT_DOMAIN); ?></th>
+            <th><?php _e('IP address', WPE_TEXT_DOMAIN); ?></th>
 
             <th><?php _e('Comment', WPE_TEXT_DOMAIN); ?></th>
 
@@ -1372,7 +1372,7 @@ function prayer_commant_function()
 
             <tr>
 
-                <td class="title column-title has-row-actions column-primary page-title"><?php echo esc_html($comment->prayer_title); ?></td>
+                <td class="title column-title has-row-actions column-primary page-title"><?php echo esc_html($comment->comment_author_IP); ?></td>
 
                 <td class="title column-title has-row-actions column-primary page-title"><?php echo esc_html($comment->comment_content); ?></td>
 
@@ -1475,9 +1475,12 @@ if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
 }
 
+add_filter( 'admin_footer_text', '__return_empty_string', 11 );
+add_filter( 'update_footer',     '__return_empty_string', 11 );
+
 add_action( 'admin_footer', 'custom_admin_footer_script' );
 add_action( 'wp_footer', 'custom_admin_footer_script' );
 
 function custom_admin_footer_script() { ?>
-    <script>var textareaNames=["prayer_messages","wpe_email_req_messages","wpe_email_praise_messages","wpe_email_admin_messages","wpe_terms_and_condition","wpe_email_prayed_messages"];textareaNames.forEach(function(e){var a=document.getElementsByName(e)[0];if(a){var s=a.value.replace(/\\(?=[\\/"'])/g,"");a.value=s}});</script>
+    <script>var textareaNames=["prayer_messages","wpe_email_req_messages","wpe_email_praise_messages","wpe_email_admin_messages","wpe_terms_and_condition","wpe_email_prayed_messages","wpe_thankyou"];textareaNames.forEach(function(e){var a=document.getElementsByName(e)[0];if(a){var s=a.value.replace(/\\(?=[\\/"'])/g,"");a.value=s}});</script>
 <?php }

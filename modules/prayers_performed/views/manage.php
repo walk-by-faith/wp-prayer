@@ -50,7 +50,7 @@ if ( class_exists( 'WP_List_Table_Helper1' ) and ! class_exists( 'WPE_Prayers_Pe
 			if($item->user_id != 0)
 				return sprintf( '%1$s %2$s', $user_info->display_name , $this->row_actions( $actions ) );
 			else
-				return sprintf( '%1$s %2$s', __('Unknown',WPE_TEXT_DOMAIN) , $this->row_actions( $actions ) );
+				return sprintf( '%1$s %2$s', 'Unknown' , $this->row_actions( $actions ) );
 		}
 
 

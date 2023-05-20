@@ -50,8 +50,8 @@ if ( ! class_exists( 'WPE_Model_Settings' ) ) {
 			// 'wpe_pray_btn_image'                   => sanitize_text_field( $_POST['wpe_pray_btn_image'] ),
 			'wpe_pray_text_color'                  => sanitize_text_field( $_POST['wpe_pray_text_color'] ),
 			'wpe_num_prayer_per_page'              => sanitize_text_field( $_POST['wpe_num_prayer_per_page'] ),
-			'wpe_terms_and_condition'              => sanitize_textarea_field( $_POST['wpe_terms_and_condition'] ),
-			'wpe_num_of_characters_in_message'     => sanitize_text_field( htmlspecialchars($_POST['wpe_num_of_characters_in_message'])),
+			'wpe_terms_and_condition'              => wp_filter_post_kses(stripslashes($_POST['wpe_terms_and_condition'] )),
+           	'wpe_num_of_characters_in_message'     => sanitize_text_field( htmlspecialchars($_POST['wpe_num_of_characters_in_message'])),
 			'wpe_login_required' 			   	   => (empty($_POST['wpe_login_required'])) ? 'true' : sanitize_text_field( $_POST['wpe_login_required'] ),
 			'wpe_send_email'                 	   => (empty($_POST['wpe_send_email'])) ? 'false' : sanitize_text_field( $_POST['wpe_send_email'] ),
 			'wpe_send_admin_email'                 => (empty($_POST['wpe_send_admin_email'])) ? 'false' : sanitize_text_field( $_POST['wpe_send_admin_email'] ),
@@ -67,11 +67,12 @@ if ( ! class_exists( 'WPE_Model_Settings' ) ) {
 			'wpe_ago'		 	 		 => (empty($_POST['wpe_ago'])) ? 'false' : sanitize_text_field( $_POST['wpe_ago'] ),			
 			'wpe_social'		 	 	 => (empty($_POST['wpe_social'])) ? 'false' : sanitize_text_field( $_POST['wpe_social'] ),
             'wpe_autoemail'		 	 	 => (empty($_POST['wpe_autoemail'])) ? 'false' : sanitize_text_field( $_POST['wpe_autoemail'] ),    
-			'wpe_prayer_time_interval'                => sanitize_text_field( $_POST['wpe_prayer_time_interval'] ),
+			'wpe_prayer_time_interval'   => sanitize_text_field( $_POST['wpe_prayer_time_interval'] ),
             'wpe_prayer_comment'		 	 => (empty($_POST['wpe_prayer_comment'])) ? 'false' : sanitize_text_field( $_POST['wpe_prayer_comment'] ),
             'wpe_prayer_comment_status'		 	 => (empty($_POST['wpe_prayer_comment_status'])) ? 'false' : sanitize_text_field( $_POST['wpe_prayer_comment_status'] ),
             'wpe_categorylist'                       => sanitize_text_field( $_POST['wpe_categorylist'] ),
 			'wpe_fetch_req_from'			 => sanitize_text_field( $_POST['wpe_fetch_req_from'] ),
+            'wpe_thankyou'                         => wp_filter_post_kses(stripslashes($_POST['wpe_thankyou'] )),
 			);
 			//$settings = unserialize(get_option('_wpe_prayer_engine_settings'));
 			//$wpe_value_array = array_merge($settings,$wpe_value_array);

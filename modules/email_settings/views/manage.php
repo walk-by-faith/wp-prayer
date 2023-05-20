@@ -137,16 +137,16 @@ $form->add_element( 'div', 'prayer_req_heading', array(
 
 
 $form->add_element( 'text', 'wpe_email_req_subject', array(
-	'label' => __( 'Prayer Request Subject', WPE_TEXT_DOMAIN ),
+	'label' => __( 'email subject', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_req_subject'] ) and ! empty( $data['wpe_email_req_subject'] )) ? $data['wpe_email_req_subject'] : $default['wpe_email_req_subject'],
 	'required' => false,
-	'placeholder' => __( 'Subject for Prayer Request', WPE_TEXT_DOMAIN ),
+	'placeholder' => __( 'email subject', WPE_TEXT_DOMAIN ),
 	'id' => 'wpe_email_req_subject',
 	'class' => 'form-control ',
 ));
 
 $form->add_element( 'textarea', 'wpe_email_req_messages', array(
-	'label' => __( 'Prayer Request Message', WPE_TEXT_DOMAIN ),
+	'label' => __( 'Message', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_req_messages'] ) and ! empty( $data['wpe_email_req_messages'] )) ?  $data['wpe_email_req_messages']  : $default['wpe_email_req_messages'],
 
 	'textarea_rows' => 15,
@@ -164,14 +164,14 @@ $form->add_element( 'div', 'praise_report_heading', array(
 	));
 
 $form->add_element( 'text', 'wpe_email_praise_subject', array(
-	'label' => __( 'Praise Report Subject', WPE_TEXT_DOMAIN ),
+	'label' => __( 'email subject', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_praise_subject'] ) and ! empty( $data['wpe_email_praise_subject'] )) ? $data['wpe_email_praise_subject'] : $default['wpe_email_praise_subject'],
 	'required' => false,
-	'placeholder' => __( 'Praise Report Subject', WPE_TEXT_DOMAIN ),
+	'placeholder' => __( 'email subject', WPE_TEXT_DOMAIN ),
 	'id' => 'wpe_email_praise_subject',
 ));
 $form->add_element( 'textarea', 'wpe_email_praise_messages', array(
-	'label' => __( 'Praise Report Message', WPE_TEXT_DOMAIN ),
+	'label' => __( 'Message', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_praise_messages'] ) and ! empty( $data['wpe_email_praise_messages'] )) ?  $data['wpe_email_praise_messages']  : $default['wpe_email_praise_messages'],
 
 	'textarea_rows' => 15,
@@ -189,7 +189,7 @@ $form->add_element( 'div', 'admin_email_heading', array(
 	));
 
 $form->add_element( 'text', 'wpe_email_admin_subject', array(
-	'label' => __( 'Admin Email Subject', WPE_TEXT_DOMAIN ),
+	'label' => __( 'email subject', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_admin_subject'] ) and ! empty( $data['wpe_email_admin_subject'] )) ? $data['wpe_email_admin_subject'] : $default['wpe_email_admin_subject'],
 	'required' => false,
 	'placeholder' => 'New {request_type} received',
@@ -197,7 +197,7 @@ $form->add_element( 'text', 'wpe_email_admin_subject', array(
 ));
 
 $form->add_element( 'textarea', 'wpe_email_admin_messages', array(
-	'label' => __( 'Admin Email Message', WPE_TEXT_DOMAIN ),
+	'label' => __( 'Message', WPE_TEXT_DOMAIN ),
 	'value' => (isset( $data['wpe_email_admin_messages'] ) and ! empty( $data['wpe_email_admin_messages'] )) ?  $data['wpe_email_admin_messages']  : $default['wpe_email_admin_messages'],
 
 	'textarea_rows' => 15,

@@ -4,7 +4,7 @@ Donate link: https://www.goministry.com/
 Tags: church, ministry, bible, pray, prayer
 Requires at least: 5.0
 Tested up to: 6.2
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -99,6 +99,9 @@ When logged in to Wordpress, captcha does not show on website. Log out from Word
 
 == Changelog ==
 
+= 2.0.3 =
+* Add custom thank you message after prayer submission 
+
 = 2.0.2 =
 * Add option to notify user when someone pray for the request
 
@@ -114,16 +117,5 @@ When logged in to Wordpress, captcha does not show on website. Log out from Word
 = 1.9.8 =
 * Option to change text on Pray button
 
-= 1.9.7 =
-* Sanitize maximum characters allowed in message box
-
-= 1.9.6 =
-* Add IP address to manage prayers and add honeypot for spam protection
-
-= 1.9.5 =
-* Fix option to display name on praise report
-
-= 1.9.4 =
-* Fix array error on admin manage prayers
 
 For older changelog entries, please see the [additional changelog.txt file](https://plugins.svn.wordpress.org/wp-prayer/trunk/changelog.txt) delivered with the plugin.

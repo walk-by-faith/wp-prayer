@@ -239,7 +239,11 @@
                             }
                             wp_mail($to, $subject, $body, $headers);
                         }
-                        $response['success'] = __('Thank you. Your form has been received.', WPE_TEXT_DOMAIN);
+                            $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
+                            if (isset($settings['wpe_thankyou']) AND ! empty($settings['wpe_thankyou'])) {
+                                $response['success'] = stripslashes($settings['wpe_thankyou']);
+                            } else {
+                                $response['success'] = __('Thank you. Your form has been received.', WPE_TEXT_DOMAIN);}
 
                         // Insert user table log on form success
 
@@ -484,7 +488,11 @@
                                 }
                                 wp_mail($email_settings['prayer_req_admin_email'], $subject, $body, $headers);
                             }
-                            $response['success'] = __('Thank you. Your form has been received.', WPE_TEXT_DOMAIN);
+                            $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
+                            if (isset($settings['wpe_thankyou']) AND ! empty($settings['wpe_thankyou'])) {
+                                $response['success'] = stripslashes($settings['wpe_thankyou']);
+                            } else {
+                                $response['success'] = __('Thank you. Your form has been received.', WPE_TEXT_DOMAIN);}
                         }
                     }
                 }

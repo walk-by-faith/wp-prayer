@@ -28,11 +28,6 @@
 					echo $link;?>
 					</li>
 					<li><?php
-					$url = admin_url( 'admin.php?page=wpe_manage_prayers_performed' );
-					$link = sprintf( wp_kses( __( 'IP address can be managed <a href="%s">here</a>.',  WPE_TEXT_DOMAIN), array( 'a' => array( 'href' => array() ) ) ), esc_url( $url ) );
-					echo $link;?>
-					</li>
-					<li><?php
 					$url = admin_url( 'admin.php?page=wpe_manage_settings' );
 					$link = sprintf( wp_kses( __( 'Settings <a href="%s">here</a>.', WPE_TEXT_DOMAIN ), array( 'a' => array( 'href' => array() ) ) ), esc_url( $url ) );
 					echo $link;?>
