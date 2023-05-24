@@ -1,5 +1,5 @@
 === WP Prayer ===
-Contributors: abrg
+Contributors: abrg,littlebenjiboy
 Donate link: https://www.goministry.com/
 Tags: church, ministry, bible, pray, prayer
 Requires at least: 5.0
