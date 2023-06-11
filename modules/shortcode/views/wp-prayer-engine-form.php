@@ -91,8 +91,8 @@ $form->add_element( 'hidden', 'honeypot', array(
 
 	'required' => false,
 	));
-	
-//if($settings['wpe_send_email']=='true'){
+
+if($settings['wpe_hide_email']!=='true'){
 
 	$form->add_element( 'text', 'prayer_author_email', array(
 
@@ -106,7 +106,7 @@ $form->add_element( 'hidden', 'honeypot', array(
 
 	));
 
-//}
+}
 
 
 
@@ -454,21 +454,22 @@ $form->add_element( 'checkbox', 'prayer_public', array(
 'current' => (isset( $data['prayer_public'] ) and ! empty( $data['prayer_public'] )) ? $data['prayer_public'] : '',
 'default_value' => 'unchecked',
 'class' => 'form-control ',
-'before' => '<div class="col-md-6">', 
-'after' => '</div>',
+//'before' => '<div class="col-md-6">',
+//'after' => '</div>',
 ));
 }
 
-if ($prayerType <> 'praise_report' && isset($settings['wpe_autoemail']) && $settings['wpe_autoemail']=='true') {
-$form->add_element( 'checkbox', 'prayer_notify', array(
-'desc' => __( 'Notify me when someone prays for this request', WPE_TEXT_DOMAIN ),
-'current' => (isset( $data['prayer_notify'] ) and ! empty( $data['prayer_notify'] )) ? $data['prayer_notify'] : '',
-'default_value' => 'unchecked',
-'class' => 'chkbox_class',    
-'before' => '<div class="col-md-6">',  
-));
+if($settings['wpe_hide_email']!=='true') {
+	if ( $prayerType <> 'praise_report' && isset( $settings['wpe_autoemail'] ) && $settings['wpe_autoemail'] == 'true' ) {
+		$form->add_element( 'checkbox', 'prayer_notify', array(
+			'desc'          => __( 'Notify me when someone prays for this request', WPE_TEXT_DOMAIN ),
+			'current'       => ( isset( $data['prayer_notify'] ) and ! empty( $data['prayer_notify'] ) ) ? $data['prayer_notify'] : '',
+			'default_value' => 'unchecked',
+			'class' => 'form-control ',
+//			'before'        => '<div class="col-md-6">',
+		) );
+	}
 }
-
 if ( isset($settings['wpe_login_required']) && $settings['wpe_login_required']!='false' && !is_user_logged_in() ) {
 
 // 	if($settings['wpe_captcha']=='false'){
@@ -533,7 +534,7 @@ if ( isset($settings['wpe_login_required']) && $settings['wpe_login_required']!=
 	// 'after' => '</div>',
   //
 	// ));
-	
+
 	$form->add_element( 'hidden', 'operation', array(
 
 	'value' => 'save',

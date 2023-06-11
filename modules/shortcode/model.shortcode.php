@@ -54,7 +54,8 @@
                 if (($option['wpe_captcha'] == 'true') || ($option['wpe_captcha'] != 'true')) {
 						$num_found1= preg_match_all('/(((http|https|ftp|ftps)\:\/\/)|(www\.))[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\:[0-9]+)?(\/\S*)?/', $_POST['prayer_author_name'], $results1, PREG_PATTERN_ORDER);
 						if (empty($_POST['prayer_author_name']) || !empty($num_found1) || strlen($_POST['prayer_author_name'])>'20') {$this->errors['prayer_author_name'] = __('Enter Name', WPE_TEXT_DOMAIN);}
-						if (!filter_var($_POST['prayer_author_email'], FILTER_VALIDATE_EMAIL)) {$this->errors['prayer_author_email'] = __('Email', WPE_TEXT_DOMAIN);}
+	                    if($option['wpe_hide_email'] !=='true'){
+                        if (!filter_var($_POST['prayer_author_email'], FILTER_VALIDATE_EMAIL)) {$this->errors['prayer_author_email'] = __('Email', WPE_TEXT_DOMAIN);}}
 						$num_found= preg_match_all('/(((http|https|ftp|ftps)\:\/\/)|(www\.))[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\:[0-9]+)?(\/\S*)?/', $_POST['prayer_messages'], $results, PREG_PATTERN_ORDER);
 						if (empty($_POST['prayer_messages']) || !empty($num_found)) {$this->errors['prayer_messages'] = __('Prayer Request', WPE_TEXT_DOMAIN);}
                             $lang=get_bloginfo("language");
@@ -119,7 +120,7 @@
                         $response['success'] = __('Prayer updated successfully', WPE_TEXT_DOMAIN);
                     } else {
                         $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
-                        if (isset($settings['wpe_send_email'])&& $settings['wpe_send_email'] == 'true') {
+                        if (isset($settings['wpe_send_email'])&& $settings['wpe_send_email'] == 'true'&& $option['wpe_hide_email'] !=='true') {
                             $headers = array('Content-Type: text/html; charset=UTF-8');
                             if ($data['prayer_author_email'] != '') {
                                 $to = $data['prayer_author_email'];
@@ -378,7 +379,7 @@
                             $response['success'] = __('Prayer updated successfully', WPE_TEXT_DOMAIN);
                         } else {
                             $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
-                            if ($settings['wpe_send_email'] == 'true') {
+                            if ($settings['wpe_send_email'] == 'true' && $option['wpe_hide_email'] !=='true') {
                                 $headers = array('Content-Type: text/html; charset=UTF-8');
                                 if ($data['prayer_author_email'] != '') {
                                     $to = $data['prayer_author_email'];

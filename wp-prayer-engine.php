@@ -18,7 +18,7 @@ Author: Go Prayer
 
 Author URI: https://www.goprayer.com/
 
-Version: 2.0.3
+Version: 2.0.4
 
 Text Domain: wp-prayer
 

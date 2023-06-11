@@ -445,7 +445,7 @@ if ( ! class_exists( 'FlipperCode_WPE_HTML_Markup' ) ) {
 				else {
     			$form_footer ='</div>
     				<div class="form-group ">
-    					<div>
+    					<div style="display: inline-block;">
     						<input type="checkbox" name="terms_and_condition" value="Terms and Conditions" id="terms_met">
     						<b>'.__('I agree to the Terms and Conditions',WPE_TEXT_DOMAIN).'</b>
     						<textarea disabled>'.$terms_and_conditions.'</textarea>
@@ -471,7 +471,7 @@ if ( ! class_exists( 'FlipperCode_WPE_HTML_Markup' ) ) {
 				}
 				if(empty ($option['wpe_prayer_btn_color'])) {$option['wpe_prayer_btn_color']='';}if(empty ($option['wpe_prayer_btn_text_color'])) {$option['wpe_prayer_btn_text_color']='';}
 				$form_footer .= '
-            <div class="form-group ">
+            <div class="form-group " id="submit-group">
 						<div class="col-md-3">&nbsp;</div>
 						<div class="col-md-6">
 						 <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -959,7 +959,7 @@ if ( ! class_exists( 'FlipperCode_WPE_HTML_Markup' ) ) {
 		public static function field_checkbox( $name, $atts ) {
 			$id      = ( ! empty( $atts['id'] ) ) ? $atts['id'] : $name;
 			$value   = $atts['value'] ? $atts['value'] : $atts['default_value'];
-			$element = '<div class="checkbox"><label><input type="checkbox"  id="' . $atts['id'] . '" name="' . $name . '" value="' . esc_attr( stripcslashes( $value ) ) . '"' . self::get_element_attributes( $atts ) . ' ' . checked( $value, $atts['current'], false ) . '/>  <span>' . $atts['desc'] . '</span></label></div> ';
+			$element = '<label><input type="checkbox"  id="' . $atts['id'] . '" name="' . $name . '" value="' . esc_attr( stripcslashes( $value ) ) . '"' . self::get_element_attributes( $atts ) . ' ' . checked( $value, $atts['current'], false ) . '/>  <span>' . $atts['desc'] . '</span></label> ';
 
 			return apply_filters( 'wpgmp_input_field_' . $name, $element, $name, $atts );
 		}

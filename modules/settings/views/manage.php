@@ -109,6 +109,15 @@ $form->add_element( 'checkbox', 'wpe_send_admin_email', array(
 	'after' => '</div>',
 	'value' => 'true',
 ));
+$form->add_element( 'checkbox', 'wpe_hide_email', array(
+
+	'current' => (isset( $data['wpe_hide_email'] ) and ! empty( $data['wpe_hide_email'] )) ? $data['wpe_hide_email'] : '',
+	'desc' => __( 'Do not show email on prayer form', WPE_TEXT_DOMAIN ),
+	'class' => 'form-control ',
+	'before' => '<div class="col-md-6">',
+	'after' => '</div>',
+	'value' => 'true',
+));
 
 /* Edit By LogixTree (Karan) */
 

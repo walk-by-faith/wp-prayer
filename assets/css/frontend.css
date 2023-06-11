@@ -104,6 +104,10 @@
 
 .wpgmp-frontend .col-md-8{width:75%; float:left;}
 
+.wpgmp-frontend .col-md-6 {
+	display: inline-block;
+}
+
 .wsl_prayer_engine{margin:20px 0;}
 
 .wsl_prayer_enginelist{float:left; width:100%; }
@@ -208,7 +212,7 @@ span.page-numbers.current, .page-numbers:hover{ border:1px solid #57a1e2 !import
 
 .wpgmp-frontend input[type="text"], .wpgmp-frontend input[type="email"], .wpgmp-frontend input[type="url"], .wpgmp-frontend input[type="password"], .wpgmp-frontend input[type="search"], .wpgmp-frontend textarea{
 
-	margin-bottom:5px;
+	margin-bottom: 15px;
 
 	font-family: auto;
 
@@ -324,6 +328,25 @@ div.wpgmp-frontend .form-group {
 
 	max-width: 100%;
 
-	display: inline-block;
+	/*display: inline-block;*/
+}
 
+.form-control {
+	margin-bottom: 15px;
+}
+
+.wsl_submit_field, .row > .btn {
+	margin-top: 15px;
+}
+
+#pr_form input[type=checkbox] {
+	opacity: 1;
+}
+
+#submit-group {
+	display: inline-block;
+}
+
+.wsl_submit_field {
+	white-space: nowrap;
 }
