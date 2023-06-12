@@ -1475,9 +1475,6 @@ if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
 }
 
-add_filter( 'admin_footer_text', '__return_empty_string', 11 );
-add_filter( 'update_footer',     '__return_empty_string', 11 );
-
 add_action( 'admin_footer', 'custom_admin_footer_script' );
 add_action( 'wp_footer', 'custom_admin_footer_script' );
 
