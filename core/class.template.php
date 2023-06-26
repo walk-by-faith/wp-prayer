@@ -509,7 +509,7 @@ if ( ! class_exists( 'FlipperCode_WPE_HTML_Markup' ) ) {
 // 								}
 							}
 							else {
-								alert('.esc_html__("I agree to the Terms and Conditions",WPE_TEXT_DOMAIN).');
+								alert("' . esc_js(__('I agree to the Terms and Conditions', WPE_TEXT_DOMAIN)) . '");
 								return false;
 							}
 
@@ -530,7 +530,7 @@ if ( ! class_exists( 'FlipperCode_WPE_HTML_Markup' ) ) {
 									return true;
 							}
 							else {
-								alert('.esc_html__("I agree to the Terms and Conditions",WPE_TEXT_DOMAIN).');
+								alert("' . esc_js(__('I agree to the Terms and Conditions', WPE_TEXT_DOMAIN)) . '");
 								return false;
 							}
 

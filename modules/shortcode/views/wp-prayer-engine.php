@@ -192,20 +192,24 @@ if (isset($_POST['author'])) {
 
 
 <?php
-wp_enqueue_script('wpe-frontend');
-wp_enqueue_style('wpe-frontend');
+wp_enqueue_script('wpp-frontend');
+wp_enqueue_style('wpp-frontend');
 $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
-$wpe_js_lang = array();
-$wpe_js_lang['ajax_url'] = admin_url('admin-ajax.php');
-$wpe_js_lang['nonce'] = wp_create_nonce('wcsl-call-nonce');
-$wpe_js_lang['loading_image'] = WPE_IMAGES.'loader.gif';
-$wpe_js_lang['confirm'] = __('Are you sure to delete item ?', WPE_TEXT_DOMAIN);
-if (isset($data['layout_post_setting']['pagination_style'])) {$wpe_js_lang['pagination_style'] = $data['layout_post_setting']['pagination_style'];}
-$wpe_js_lang['WCSL_IMAGES'] = WPE_IMAGES;
-$wpe_js_lang['loading_text'] =('...');
-$wpe_js_lang['prayed_text'] = ('...');if(isset( $settings['wpe_pray_text'] ) and !empty ($settings['wpe_pray_text'])) {$wpe_js_lang['pray1_text'] = $settings['wpe_pray_text'];} else {$wpe_js_lang['pray1_text'] = __('Pray', WPE_TEXT_DOMAIN);} 
-$wpe_js_lang['pray_time_interval']='';if(isset($settings['wpe_prayer_time_interval'])){$wpe_js_lang['pray_time_interval'] = intval($settings['wpe_prayer_time_interval']);}
-wp_localize_script('wpe-frontend', 'wpe_js_lang', $wpe_js_lang);
+
+$wcsl_js_lang = array(
+	'ajax_url' => admin_url('admin-ajax.php'),
+	'nonce' => wp_create_nonce('wpe-call-nonce'),
+	'confirm' => __('Are you sure to delete item ?', WPE_TEXT_DOMAIN),
+    'loading_image' => WPE_IMAGES.'loader.gif',
+);
+if (isset($data['layout_post_setting']['pagination_style'])) {$wcsl_js_lang['pagination_style'] = $data['layout_post_setting']['pagination_style'];}
+$wcsl_js_lang['WCSL_IMAGES'] = WPE_IMAGES;
+$wcsl_js_lang['loading_text'] =('...');
+$wcsl_js_lang['prayed_text'] = ('...');if(isset( $settings['wpe_pray_text'] ) and !empty ($settings['wpe_pray_text'])) {$wcsl_js_lang['pray1_text'] = $settings['wpe_pray_text'];} else {$wcsl_js_lang['pray1_text'] = __('Pray', WPE_TEXT_DOMAIN);}
+$wcsl_js_lang['pray_time_interval']='';if(isset($settings['wpe_prayer_time_interval'])){$wcsl_js_lang['pray_time_interval'] = intval($settings['wpe_prayer_time_interval']);}
+$script = "var wcsl_js_lang = " . wp_json_encode($wcsl_js_lang) . ";";
+wp_enqueue_script('wpp-frontend');
+wp_add_inline_script('wpp-frontend', $script, 'before');
 
 $prayer_obj = $modelFactory->create_object('prayer');
 $paged = (isset($_GET['page_num']) && intval($_GET['page_num'])) ? $_GET['page_num'] : 1;
@@ -297,22 +301,22 @@ if ( ! empty($prayers)) {
             //echo $pray->prayer_id;
             if (is_user_logged_in()) {
                 if (false && in_array($pray->prayer_id, $prayer_performed_obj)) {
-                    echo '<input type="submit" name="do_pray" class="prayed" id="do_pray_'.$pray->prayer_id.'" value="'.$wpe_js_lang['prayed_text'].'" />';
+                    echo '<input type="submit" name="do_pray" class="prayed" id="do_pray_'.$pray->prayer_id.'" value="'.$wcsl_js_lang['prayed_text'].'" />';
                 } else { ?>
                    <!-- echo $_SERVER['REMOTE_ADDR'];
                         echo esc_html(base64_encode($ip)); -->
                     <input type="submit" onclick="do_pray(<?php echo esc_html($pray->prayer_id); ?>,'<?php echo esc_html(base64_encode($ip)); ?>');" name="do_pray"
-                           id="do_pray_<?php echo esc_html($pray->prayer_id); ?>" value="<?php echo $wpe_js_lang['pray1_text']; ?>"/>
+                           id="do_pray_<?php echo esc_html($pray->prayer_id); ?>" value="<?php echo $wcsl_js_lang['pray1_text']; ?>"/>
                 <?php }
             } else{
                 if (false && in_array($pray->prayer_id, $prayer_performed_obj)) {
-                    echo '<input type="submit" name="do_pray" class="prayed" id="do_pray_'.$pray->prayer_id.'" value="'.$wpe_js_lang['prayed_text'].'" />';
+                    echo '<input type="submit" name="do_pray" class="prayed" id="do_pray_'.$pray->prayer_id.'" value="'.$wcsl_js_lang['prayed_text'].'" />';
                 } else {
                     ?>
                     <input type="submit"
                            onclick="do_pray(<?php echo esc_html($pray->prayer_id); ?>,'<?php echo esc_html(base64_encode($ip)); ?>');"
                            name="do_pray" id="do_pray_<?php echo esc_html($pray->prayer_id); ?>"
-                           value="<?php echo $wpe_js_lang['pray1_text']; ?>"/>
+                           value="<?php echo $wcsl_js_lang['pray1_text']; ?>"/>
                 <?php }
             }
             echo '</div>';
@@ -517,4 +521,30 @@ $img_atts = wp_get_attachment_image_src($IMG_ID, 'full');
   </div>
 </body>
 </html>
-<?php ;}?>
+<?php ;}
+
+add_action('wp_head', 'myplugin_ajaxurl');
+function myplugin_ajaxurl() {
+   ?> 
+    <script type="text/javascript">
+    var ajaxnonce = <?php echo json_encode( wp_create_nonce( "itr_ajax_nonce" ) ); ?>;
+    <?php $settings = unserialize(get_option('_wpe_prayer_engine_settings')); ?>
+    var wcsl_js_lang = <?php echo json_encode( array(
+         'ajax_url' => admin_url('admin-ajax.php'),
+         'loading_text' => "...",
+         'prayed_text' => "...",
+         'pray1_text' => (isset( $settings['wpe_pray_text'] ) and ! empty( $settings['wpe_pray_text'] )) ? $settings['wpe_pray_text'] : __('Pray', WPE_TEXT_DOMAIN),
+         'pray_time_interval' => (isset( $settings['wpe_prayer_time_interval'] ) and ! empty( $settings['wpe_prayer_time_interval'] )) ? $settings['wpe_prayer_time_interval'] : '',
+         'loading_image' => WPE_IMAGES.'loader.gif',
+       ) ); ?>
+      <?php
+      if(isset( $settings['wpe_pray_text'] ) and !empty ($settings['wpe_pray_text'])) 
+      {$wcsl_js_lang['pray1_text'] = $settings['wpe_pray_text'];}
+       else {$wcsl_js_lang['pray1_text'] = __('Pray', WPE_TEXT_DOMAIN);}
+      if(isset($settings['wpe_prayer_time_interval'])){
+        $wcsl_js_lang['pray_time_interval'] = intval($settings['wpe_prayer_time_interval']);}
+      ?>
+  </script>
+  <?php   
+}
+?>

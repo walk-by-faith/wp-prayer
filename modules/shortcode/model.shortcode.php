@@ -59,7 +59,7 @@
 						$num_found= preg_match_all('/(((http|https|ftp|ftps)\:\/\/)|(www\.))[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\:[0-9]+)?(\/\S*)?/', $_POST['prayer_messages'], $results, PREG_PATTERN_ORDER);
 						if (empty($_POST['prayer_messages']) || !empty($num_found)) {$this->errors['prayer_messages'] = __('Prayer Request', WPE_TEXT_DOMAIN);}
                             $lang=get_bloginfo("language");
-                            $length_count = str_word_count($_POST['prayer_messages']);
+                            $length_count = CountString($_POST['prayer_messages']);
                             $arr = array("en-US", "es-MX" , "fr-CA" , "pl_PL","es-ES","es-VE","ru-RU","sr-RS","es-EC","nl-NL");
                             if(in_array($lang, $arr) and $length_count< 3) {$this->errors['prayer_messages'] = __('Prayer Request',WPE_TEXT_DOMAIN);}
                             $this->verify($_POST);
@@ -524,7 +524,47 @@
                 return $site_name;
             }
         }
-    } ?>
+	    function Clearstring(string $string)
+	    {
+		    $string = strtolower($string);
+		    $string = preg_replace('/[,.!;?]/',"",$string);
+		    return $string;
+	    }
+
+	    function CountString($string){
+		    $textsplit = preg_split("/\s/",$string);
+		    $wordsArray = [];
+		    $array= [];
+		    $counter = 0;
+		    foreach($textsplit as $word){
+			    try{
+				    $word = Clearstring($word);
+				    if(in_array($word,$array))
+				    {
+					    if(in_array($wordsArray[$word],$wordsArray))
+					    {
+						    $wordsArray[$word] +=1;
+					    }
+				    }
+				    else{
+					    array_push($array,$word);
+					    $counter =0;
+					    $wordsArray[$word] = $counter;
+					    if(in_array($wordsArray[$word],$wordsArray))
+					    {
+						    $wordsArray[$word] +=1;
+					    }
+				    }
+			    }catch(Exception $ex){
+				    echo "*".$ex;
+			    }
+		    }
+		    $countwords = count($wordsArray);
+		    return $countwords;
+	    }
+    }
+
+    ?>
 </head>
 <body>
 </body>

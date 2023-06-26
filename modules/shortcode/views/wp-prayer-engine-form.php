@@ -38,9 +38,9 @@ global $wpdb, $post;
 $modelFactory = new FactoryModelWPE();
 ob_start();
 
-wp_enqueue_script( 'wpe-frontend' );
+wp_enqueue_script( 'wpp-frontend' );
 
-wp_enqueue_style( 'wpe-frontend' );
+wp_enqueue_style( 'wpp-frontend' );
 
 if ( isset($settings['wpe_login_required']) && $settings['wpe_login_required']!='false' && !is_user_logged_in() ) {
 
@@ -54,15 +54,18 @@ if ( isset($settings['wpe_login_required']) && $settings['wpe_login_required']!=
 
 $shortcode_obj = $modelFactory->create_object( 'shortcode' );
 
-$wpe_js_lang = array();
-$wpe_js_lang['ajax_url'] = admin_url( 'admin-ajax.php' );
-$wpe_js_lang['nonce'] = wp_create_nonce( 'wcsl-call-nonce' );
+$wcsl_js_lang = array(
+	'ajax_url' => admin_url('admin-ajax.php'),
+	'nonce' => wp_create_nonce('wpe-call-nonce'),
+	'confirm' => __('Are you sure to delete item ?', 'wpe-text-domain'),
+);
+$script = "var wcsl_js_lang = " . wp_json_encode($wcsl_js_lang) . ";";
+if (isset($data)) {$wcsl_js_lang['pagination_style'] = isset($data['layout_post_setting']['pagination_style']);}
 
-$wpe_js_lang['confirm'] = __( 'Are you sure to delete item ?',WPE_TEXT_DOMAIN );
-if (isset($data)) {$wpe_js_lang['pagination_style'] = isset($data['layout_post_setting']['pagination_style']);}
 
+wp_enqueue_script('wpp-frontend');
+wp_add_inline_script('wpp-frontend', $script, 'before');
 
-wp_localize_script( 'wpe-frontend', 'wcsl_js_lang', $wpe_js_lang );
 if(isset($_POST)){$data = $_POST;}
 $form  = new FlipperCode_WPE_HTML_Markup();
 

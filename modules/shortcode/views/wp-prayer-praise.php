@@ -10,24 +10,31 @@ global $wpdb, $paged, $max_num_pages, $wp_rewrite, $wp_query;
 $modelFactory = new FactoryModelWPE();
 
 
-wp_enqueue_script('wpe-frontend');
-wp_enqueue_style('wpe-frontend');
+wp_enqueue_script('wpp-frontend');
+wp_enqueue_style('wpp-frontend');
 
 $settings = unserialize(get_option('_wpe_prayer_engine_settings'));
 
-$wpe_js_lang = array();
-$wpe_js_lang['ajax_url'] = admin_url('admin-ajax.php');
-$wpe_js_lang['nonce'] = wp_create_nonce('wcsl-call-nonce');
-$wpe_js_lang['loading_image'] = WPE_IMAGES.'loader.gif';
-$wpe_js_lang['confirm'] = __('Are you sure to delete item ?', WPE_TEXT_DOMAIN);
-$wpe_js_lang['pagination_style'] = isset($data['layout_post_setting']['pagination_style']);
-$wpe_js_lang['WCSL_IMAGES'] = WPE_IMAGES;
-$wpe_js_lang['loading_text'] =('...');
-$wpe_js_lang['prayed_text'] = ('...');
-$wpe_js_lang['pray_time_interval']='';if(isset($settings['wpe_prayer_time_interval'])){$wpe_js_lang['pray_time_interval'] = intval($settings['wpe_prayer_time_interval']);}
+$wcsl_js_lang = array(
+	'ajax_url' => admin_url('admin-ajax.php'),
+	'nonce' => wp_create_nonce('wpe-call-nonce'),
+	'confirm' => __('Are you sure to delete item ?', WPE_TEXT_DOMAIN),
+    'loading_image' => WPE_IMAGES.'loader.gif',
+    'pagination_style' => isset($data['layout_post_setting']['pagination_style']),
+    'WCSL_IMAGES' => WPE_IMAGES,
+    'loading_text' => '...',
+    'prayed_text' => '...',
+	'pray1_text' => (isset( $settings['wpe_pray_text'] ) and ! empty( $settings['wpe_pray_text'] )) ? $settings['wpe_pray_text'] : __('Pray', WPE_TEXT_DOMAIN),
+	'pray_time_interval' => (isset( $settings['wpe_prayer_time_interval'] ) and ! empty( $settings['wpe_prayer_time_interval'] )) ? $settings['wpe_prayer_time_interval'] : '',
+);
 
-wp_localize_script('wpe-frontend', 'wpe_js_lang', $wpe_js_lang);
-if(isset( $settings['wpe_pray_text'] ) and !empty ($settings['wpe_pray_text'])) {$wpe_js_lang['pray1_text'] = $settings['wpe_pray_text'];} else {$wpe_js_lang['pray1_text'] = __('Pray', WPE_TEXT_DOMAIN);} 
+if(isset($settings['wpe_prayer_time_interval'])){$wcsl_js_lang['pray_time_interval'] = intval($settings['wpe_prayer_time_interval']);}
+
+$script = "var wcsl_js_lang = " . wp_json_encode($wcsl_js_lang) . ";";
+wp_enqueue_script('wpp-frontend');
+wp_add_inline_script('wpp-frontend', $script, 'before');
+
+if(isset( $settings['wpe_pray_text'] ) and !empty ($settings['wpe_pray_text'])) {$wcsl_js_lang['pray1_text'] = $settings['wpe_pray_text'];} else {$wcsl_js_lang['pray1_text'] = __('Pray', WPE_TEXT_DOMAIN);} 
 
 
 $prayer_obj = $modelFactory->create_object('prayer');

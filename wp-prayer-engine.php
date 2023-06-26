@@ -3,7 +3,7 @@
  * WP Prayer Engine class file.
  * @package Forms
  * @author Go Prayer
- * @version 2.0.3
+ * @version 2.0.5
  */
 
 /*
@@ -18,7 +18,7 @@ Author: Go Prayer
 
 Author URI: https://www.goprayer.com/
 
-Version: 2.0.4
+Version: 2.0.5
 
 Text Domain: wp-prayer
 
@@ -192,7 +192,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
         {
 
             global $wpdb;
-
+            
             add_action('admin_menu', array($this, 'create_menu'));
             
 
@@ -201,6 +201,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
                 add_action('wp_enqueue_scripts', array($this, 'wpe_frontend_scripts'));
 
             }
+            
 
         }
 
@@ -217,7 +218,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             $scripts[] = array(
 
-                'handle' => 'wpe-frontend',
+                'handle' => 'wpp-frontend',
 
                 'src' => WPE_JS.'frontend.js',
 
@@ -239,7 +240,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             $frontend_styles = array(
 
-                'wpe-frontend' => WPE_CSS.'frontend.css',
+                'wpp-frontend' => WPE_CSS.'frontend.css',
 
             );
 
@@ -415,7 +416,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             $scripts[] = array(
 
-                'handle' => 'wpe-backend-bootstrap',
+                'handle' => 'wpp-backend-bootstrap',
 
                 'src' => WPE_JS.'bootstrap.min.js',
 
@@ -425,7 +426,7 @@ if ( ! class_exists('WP_Prayer_Engine')) {
 
             $scripts[] = array(
 
-                'handle' => 'wpe-backend',
+                'handle' => 'wpp-backend',
 
                 'src' => WPE_JS.'backend.js',
 
@@ -444,22 +445,14 @@ if ( ! class_exists('WP_Prayer_Engine')) {
             }
 
 
-            $wpe_js_lang = array();
-
-            $wpe_js_lang['ajax_url'] = admin_url('admin-ajax.php');
-
-            $wpe_js_lang['nonce'] = wp_create_nonce('wpe-call-nonce');
-
-            $wpe_js_lang['confirm'] = __('Are you sure to delete item ?', WPE_TEXT_DOMAIN);
-
-            wp_localize_script('wpe-backend', 'wpe_js_lang', $wpe_js_lang);
+            
 
             $admin_styles = array(
                 'flippercode-bootstrap' => WPE_CSS.'bootstrap.min.css',
 
-                'wpe-backend-style' => WPE_CSS.'backend.css',
+                'wpp-backend-style' => WPE_CSS.'backend.css',
 
-                'wpe-frontend-style' => WPE_CSS.'frontend.css',
+                'wpp-frontend-style' => WPE_CSS.'frontend.css',
                 
 
             );
@@ -472,6 +465,17 @@ if ( ! class_exists('WP_Prayer_Engine')) {
                 }
 
             }
+
+            $wcsl_js_lang = array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('wpe-call-nonce'),
+                'confirm' => __('Are you sure to delete item ?', 'wpe-text-domain'),
+            );
+            
+            $script = "var wcsl_js_lang = " . wp_json_encode($wcsl_js_lang) . ";";
+            
+            wp_enqueue_script('wpp-frontend');
+            wp_add_inline_script('wpp-frontend', $script, 'before');
 
         }
 

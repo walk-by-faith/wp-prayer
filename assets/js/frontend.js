@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 function do_pray(pray_id,user_ip){
 	jQuery.ajax({
 				type: "POST",
-				url: wpe_js_lang.ajax_url,
+				url: wcsl_js_lang.ajax_url,
 				data: {
 					action: 'wpe_ajax_call',
 					'prayer_id': pray_id,
@@ -31,7 +31,7 @@ function do_pray(pray_id,user_ip){
 				beforeSend: function() {
 					jQuery('#do_pray_'+pray_id).attr('disabled','disabled');
 					jQuery('#do_pray_'+pray_id).addClass('prayed');
-					jQuery('#do_pray_'+pray_id).val(wpe_js_lang.loading_text);jQuery('#do_pray_'+pray_id).val(wpe_js_lang.pray1_text);
+					jQuery('#do_pray_'+pray_id).val(wcsl_js_lang.loading_text);jQuery('#do_pray_'+pray_id).val(wcsl_js_lang.pray1_text);
 				},
 				success: function(data) {
 					//console.log(data);
@@ -41,24 +41,24 @@ function do_pray(pray_id,user_ip){
 						 count = parseInt(count) + 1;
 						jQuery('#prayer_count'+pray_id).html(count);
 						 jQuery('#do_pray_'+pray_id)
-							.val(wpe_js_lang.prayed_text)
+							.val(wcsl_js_lang.prayed_text)
 							//.removeAttr('onclick')
 							//.removeAttr('disabled');
 						.prop("disabled", false);
 
 
 					} else {
-						jQuery('#do_pray_'+pray_id).val(wpe_js_lang.prayed_text);
+						jQuery('#do_pray_'+pray_id).val(wcsl_js_lang.prayed_text);
 
 					}
 
 
 					setTimeout(function(){
-						jQuery('#do_pray_'+pray_id).val(wpe_js_lang.pray1_text)
+						jQuery('#do_pray_'+pray_id).val(wcsl_js_lang.pray1_text)
 							.removeClass('prayed')
 							//.removeAttr('disabled');
 							.prop("disabled", false);
-					},parseInt(wpe_js_lang.pray_time_interval)*1000);
+					},parseInt(wcsl_js_lang.pray_time_interval)*1000);
 				}
 
 			});
